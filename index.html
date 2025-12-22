@@ -14,7 +14,7 @@ header p { margin: 0; font-size: 14px; }
 .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
 button { background: #0b5ed7; color: white; border: none; padding: 12px 20px; font-size: 15px; border-radius: 6px; cursor: pointer; }
 button:hover { background: #084298; }
-input, textarea { width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; }
+input, textarea, select { width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; }
 textarea { min-height: 120px; }
 img { max-width: 100%; border-radius: 6px; margin-top: 10px; }
 .footer { text-align: center; font-size: 13px; color: #555; padding: 10px; }
@@ -47,7 +47,9 @@ img { max-width: 100%; border-radius: 6px; margin-top: 10px; }
     <label>Class</label>
     <input value="SHS 1" disabled>
     <label>Index Number</label>
-    <input id="index" required>
+    <select id="index" required>
+      <option value="">-- Select Index Number --</option>
+    </select>
     <button onclick="saveDetails()">Continue</button>
   </div>
 </div>
@@ -131,19 +133,45 @@ img { max-width: 100%; border-radius: 6px; margin-top: 10px; }
 <div class="footer">© SHS Ghana Curriculum | Academic Use Only</div>
 
 <script>
-function go(page) { document.querySelectorAll(".page").forEach(p => p.classList.remove("active")); document.getElementById(page).classList.add("active"); }
+function go(page) { 
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active")); 
+  document.getElementById(page).classList.add("active"); 
+}
+
 function saveDetails() {
-  if (!name.value || !school.value || !index.value) { alert("Please fill all fields"); return; }
-  localStorage.setItem("name", name.value);
-  localStorage.setItem("school", school.value);
-  localStorage.setItem("index", index.value);
+  const nameEl = document.getElementById("name");
+  const schoolEl = document.getElementById("school");
+  const indexEl = document.getElementById("index");
+
+  let valid = true;
+
+  // Highlight empty fields
+  [nameEl, schoolEl, indexEl].forEach(el => {
+    if (!el.value) {
+      el.style.border = "2px solid red"; // highlight red
+      valid = false;
+    } else {
+      el.style.border = "1px solid #ccc"; // reset if filled
+    }
+  });
+
+  if (!valid) {
+    alert("Please fill all fields to continue.");
+    return;
+  }
+
+  localStorage.setItem("name", nameEl.value);
+  localStorage.setItem("school", schoolEl.value);
+  localStorage.setItem("index", indexEl.value);
   go("instructions");
 }
+
 function previewImage(event, previewId) {
   const reader = new FileReader();
   reader.onload = function() { document.getElementById(previewId).src = reader.result; }
   reader.readAsDataURL(event.target.files[0]);
 }
+
 function saveAnswers() {
   localStorage.setItem("q1", document.getElementById("q1").value);
   localStorage.setItem("q2a", document.getElementById("q2a").value);
@@ -164,6 +192,23 @@ function saveAnswers() {
   document.getElementById("rImg2b").src = localStorage.getItem("img2b") || "";
   document.getElementById("rImg2c").src = localStorage.getItem("img2c") || "";
 }
+
+// Generate 10 random 6-digit index numbers
+function generateIndexNumbers() {
+  const select = document.getElementById("index");
+  for (let i = 0; i < 10; i++) {
+    let num = Math.floor(100000 + Math.random() * 900000);
+    let option = document.createElement("option");
+    option.value = num;
+    option.text = num;
+    select.add(option);
+  }
+}
+
+// Call when page loads
+window.onload = function() {
+  generateIndexNumbers();
+};
 </script>
 
 </body>
