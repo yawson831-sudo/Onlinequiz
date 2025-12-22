@@ -12,19 +12,28 @@ header p { margin: 0; font-size: 14px; }
 .page { display: none; padding: 20px; max-width: 900px; margin: auto; }
 .page.active { display: block; }
 .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-button { background: #0b5ed7; color: white; border: none; padding: 12px 20px; font-size: 15px; border-radius: 6px; cursor: pointer; }
+button { background: #0b5ed7; color: white; border: none; padding: 12px 20px; font-size: 15px; border-radius: 6px; cursor: pointer; margin-right: 10px;}
 button:hover { background: #084298; }
 input, textarea, select { width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; }
 textarea { min-height: 120px; }
-img { max-width: 100%; border-radius: 6px; margin-top: 10px; }
+img { max-width: 100%; border-radius: 6px; margin-top: 10px; display: none; }
 .footer { text-align: center; font-size: 13px; color: #555; padding: 10px; }
+.nav-btns { text-align:center; margin-top:10px; }
+.nav-btns button { margin:5px;}
 </style>
+<!-- jsPDF CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
 <header>
   <h1>SHS Ghana Curriculum</h1>
   <p>Social Studies – SHS 1 | Vacation Assignment</p>
+  <div class="nav-btns">
+    <button onclick="go('home')">Home</button>
+    <button onclick="go('details')">Start Assignment</button>
+    <button onclick="go('portal')">Results Portal</button>
+  </div>
 </header>
 
 <!-- HOME -->
@@ -87,25 +96,22 @@ img { max-width: 100%; border-radius: 6px; margin-top: 10px; }
     <h3>2. Indigenous Technologies in Ancient Africa</h3>
 
     <h4>(a) Metalworking</h4>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAABV7bNHAAAACXBIWXMAAA7EAAAOxAGVKw4bAAA..." alt="Metalworking">
     <textarea id="q2a" placeholder="Discuss indigenous metalworking and its uses..."></textarea>
     <input type="file" id="img2a" accept="image/*" onchange="previewImage(event,'preview2a')">
     <img id="preview2a" src="" alt="Uploaded Metalworking Image">
 
     <h4>(b) Irrigation System</h4>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAABV7bNHAAAACXBIWXMAAA7EAAAOxAGVKw4bAAA..." alt="Irrigation System">
     <textarea id="q2b" placeholder="Discuss ancient irrigation systems in Africa..."></textarea>
     <input type="file" id="img2b" accept="image/*" onchange="previewImage(event,'preview2b')">
     <img id="preview2b" src="" alt="Uploaded Irrigation Image">
 
     <h4>(c) Third Illustration</h4>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAABV7bNHAAAACXBIWXMAAA7EAAAOxAGVKw4bAAA..." alt="Third Illustration Placeholder">
     <textarea id="q2c" placeholder="Discuss the third illustration or concept..."></textarea>
     <input type="file" id="img2c" accept="image/*" onchange="previewImage(event,'preview2c')">
     <img id="preview2c" src="" alt="Uploaded Third Image">
   </div>
 
-  <button onclick="go('result');saveAnswers()">Submit Assignment</button>
+  <button onclick="saveAnswers(); go('result');">Submit Assignment</button>
 </div>
 
 <!-- RESULT -->
@@ -125,8 +131,22 @@ img { max-width: 100%; border-radius: 6px; margin-top: 10px; }
     <p><b>2c.</b> <span id="rQ2c"></span></p>
     <img id="rImg2c" src="" alt="Third Uploaded Image">
     <hr>
-    <p>Your assignment has been successfully completed. Please print or submit to your teacher.</p>
+    <p>Your assignment has been successfully completed. You can print, download as PDF, or send via WhatsApp.</p>
     <button onclick="window.print()">Print</button>
+    <button onclick="sendWhatsApp()">Send via WhatsApp</button>
+  </div>
+</div>
+
+<!-- RESULTS PORTAL -->
+<div class="page" id="portal">
+  <div class="card">
+    <h2>Check Your Submitted Assignment</h2>
+    <label>Enter your Index Number</label>
+    <input id="portalIndex" placeholder="e.g., 123456">
+    <button onclick="checkPortal()">Check Results</button>
+    <button onclick="downloadPortalPDF()">Download PDF</button>
+    <div id="portalResult" style="margin-top:20px;"></div>
+    <button onclick="go('home')" style="margin-top:15px;">Back to Home</button>
   </div>
 </div>
 
@@ -144,14 +164,12 @@ function saveDetails() {
   const indexEl = document.getElementById("index");
 
   let valid = true;
-
-  // Highlight empty fields
   [nameEl, schoolEl, indexEl].forEach(el => {
     if (!el.value) {
-      el.style.border = "2px solid red"; // highlight red
+      el.style.border = "2px solid red";
       valid = false;
     } else {
-      el.style.border = "1px solid #ccc"; // reset if filled
+      el.style.border = "1px solid #ccc";
     }
   });
 
@@ -160,37 +178,134 @@ function saveDetails() {
     return;
   }
 
-  localStorage.setItem("name", nameEl.value);
-  localStorage.setItem("school", schoolEl.value);
-  localStorage.setItem("index", indexEl.value);
+  const students = JSON.parse(localStorage.getItem("students") || "{}");
+  students[indexEl.value] = {
+    name: nameEl.value,
+    school: schoolEl.value,
+    q1: "",
+    q2a: "",
+    q2b: "",
+    q2c: "",
+    img2a: "",
+    img2b: "",
+    img2c: ""
+  };
+  localStorage.setItem("students", JSON.stringify(students));
+  localStorage.setItem("currentIndex", indexEl.value);
   go("instructions");
 }
 
 function previewImage(event, previewId) {
   const reader = new FileReader();
-  reader.onload = function() { document.getElementById(previewId).src = reader.result; }
+  reader.onload = function() { 
+    const img = document.getElementById(previewId);
+    img.src = reader.result; 
+    img.style.display = "block"; 
+  }
   reader.readAsDataURL(event.target.files[0]);
 }
 
 function saveAnswers() {
-  localStorage.setItem("q1", document.getElementById("q1").value);
-  localStorage.setItem("q2a", document.getElementById("q2a").value);
-  localStorage.setItem("q2b", document.getElementById("q2b").value);
-  localStorage.setItem("q2c", document.getElementById("q2c").value);
-  localStorage.setItem("img2a", document.getElementById("preview2a").src);
-  localStorage.setItem("img2b", document.getElementById("preview2b").src);
-  localStorage.setItem("img2c", document.getElementById("preview2c").src);
+  const index = localStorage.getItem("currentIndex");
+  if (!index) return;
+  const students = JSON.parse(localStorage.getItem("students") || "{}");
+  
+  students[index] = {
+    ...students[index],
+    q1: document.getElementById("q1").value,
+    q2a: document.getElementById("q2a").value,
+    q2b: document.getElementById("q2b").value,
+    q2c: document.getElementById("q2c").value,
+    img2a: document.getElementById("preview2a").src,
+    img2b: document.getElementById("preview2b").src,
+    img2c: document.getElementById("preview2c").src
+  };
+  localStorage.setItem("students", JSON.stringify(students));
 
-  document.getElementById("rName").innerText = localStorage.getItem("name") || "";
-  document.getElementById("rSchool").innerText = localStorage.getItem("school") || "";
-  document.getElementById("rIndex").innerText = localStorage.getItem("index") || "";
-  document.getElementById("rQ1").innerText = localStorage.getItem("q1") || "";
-  document.getElementById("rQ2a").innerText = localStorage.getItem("q2a") || "";
-  document.getElementById("rQ2b").innerText = localStorage.getItem("q2b") || "";
-  document.getElementById("rQ2c").innerText = localStorage.getItem("q2c") || "";
-  document.getElementById("rImg2a").src = localStorage.getItem("img2a") || "";
-  document.getElementById("rImg2b").src = localStorage.getItem("img2b") || "";
-  document.getElementById("rImg2c").src = localStorage.getItem("img2c") || "";
+  // Update result page
+  document.getElementById("rName").innerText = students[index].name;
+  document.getElementById("rSchool").innerText = students[index].school;
+  document.getElementById("rIndex").innerText = index;
+  document.getElementById("rQ1").innerText = students[index].q1;
+  document.getElementById("rQ2a").innerText = students[index].q2a;
+  document.getElementById("rQ2b").innerText = students[index].q2b;
+  document.getElementById("rQ2c").innerText = students[index].q2c;
+  document.getElementById("rImg2a").src = students[index].img2a;
+  document.getElementById("rImg2b").src = students[index].img2b;
+  document.getElementById("rImg2c").src = students[index].img2c;
+  document.getElementById("rImg2a").style.display = students[index].img2a ? "block" : "none";
+  document.getElementById("rImg2b").style.display = students[index].img2b ? "block" : "none";
+  document.getElementById("rImg2c").style.display = students[index].img2c ? "block" : "none";
+}
+
+// WhatsApp submission
+function sendWhatsApp() {
+  const index = localStorage.getItem("currentIndex");
+  if (!index) return;
+  const students = JSON.parse(localStorage.getItem("students") || "{}");
+  const s = students[index];
+
+  const message = `SHS Social Studies Assignment Submission\n\nName: ${s.name}\nSchool: ${s.school}\nIndex Number: ${index}\n\nAnswers:\n1. ${s.q1}\n2a. ${s.q2a}\n2b. ${s.q2b}\n2c. ${s.q2c}`;
+  const phoneNumber = "233208333632";
+  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+}
+
+// RESULTS PORTAL
+function checkPortal() {
+  const inputIndex = document.getElementById("portalIndex").value.trim();
+  const portalResult = document.getElementById("portalResult");
+  
+  if (!inputIndex) {
+    alert("Please enter an index number.");
+    return;
+  }
+
+  const students = JSON.parse(localStorage.getItem("students") || "{}");
+  if (students[inputIndex]) {
+    const s = students[inputIndex];
+    portalResult.innerHTML = `
+      <h3>Results for Index Number: ${inputIndex}</h3>
+      <p><b>Name:</b> ${s.name}</p>
+      <p><b>School:</b> ${s.school}</p>
+      <hr>
+      <h4>Answers:</h4>
+      <p><b>1.</b> ${s.q1}</p>
+      <p><b>2a.</b> ${s.q2a}</p>
+      ${s.img2a ? `<img src="${s.img2a}" style="display:block; max-width:100%; margin-top:10px;">` : ""}
+      <p><b>2b.</b> ${s.q2b}</p>
+      ${s.img2b ? `<img src="${s.img2b}" style="display:block; max-width:100%; margin-top:10px;">` : ""}
+      <p><b>2c.</b> ${s.q2c}</p>
+      ${s.img2c ? `<img src="${s.img2c}" style="display:block; max-width:100%; margin-top:10px;">` : ""}
+    `;
+  } else {
+    portalResult.innerHTML = `<p style="color:red;">No results found for Index Number: ${inputIndex}</p>`;
+  }
+}
+
+// DOWNLOAD PDF FROM PORTAL
+function downloadPortalPDF() {
+  const inputIndex = document.getElementById("portalIndex").value.trim();
+  if (!inputIndex) { alert("Enter an index number first."); return; }
+  const students = JSON.parse(localStorage.getItem("students") || "{}");
+  if (!students[inputIndex]) { alert("No results found."); return; }
+  const s = students[inputIndex];
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let y = 10;
+  doc.setFontSize(16);
+  doc.text("SHS Ghana Curriculum – Social Studies Assignment", 10, y); y+=10;
+  doc.setFontSize(12);
+  doc.text(`Name: ${s.name}`, 10, y); y+=7;
+  doc.text(`School: ${s.school}`, 10, y); y+=7;
+  doc.text(`Index Number: ${inputIndex}`, 10, y); y+=10;
+  doc.text("Answers:", 10, y); y+=7;
+  doc.text(`1. ${s.q1}`, 10, y); y+=7;
+  doc.text(`2a. ${s.q2a}`, 10, y); y+=7;
+  doc.text(`2b. ${s.q2b}`, 10, y); y+=7;
+  doc.text(`2c. ${s.q2c}`, 10, y); y+=7;
+  doc.save(`Assignment_${inputIndex}.pdf`);
 }
 
 // Generate 10 random 6-digit index numbers
@@ -205,7 +320,6 @@ function generateIndexNumbers() {
   }
 }
 
-// Call when page loads
 window.onload = function() {
   generateIndexNumbers();
 };
