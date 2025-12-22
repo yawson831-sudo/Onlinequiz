@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHS Ghana Curriculum | Social Studies Assignment</title>
+<style>
+body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #f4f7fb; color: #222; }
+header { background: linear-gradient(90deg, #0b5ed7, #198754); color: white; padding: 15px; text-align: center; }
+header h1 { margin: 5px 0; font-size: 22px; }
+header p { margin: 0; font-size: 14px; }
+.page { display: none; padding: 20px; max-width: 900px; margin: auto; }
+.page.active { display: block; }
+.card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+button { background: #0b5ed7; color: white; border: none; padding: 12px 20px; font-size: 15px; border-radius: 6px; cursor: pointer; }
+button:hover { background: #084298; }
+input, textarea { width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; }
+textarea { min-height: 120px; }
+img { max-width: 100%; border-radius: 6px; margin-top: 10px; }
+.footer { text-align: center; font-size: 13px; color: #555; padding: 10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>SHS Ghana Curriculum</h1>
+  <p>Social Studies – SHS 1 | Vacation Assignment</p>
+</header>
+
+<!-- HOME -->
+<div class="page active" id="home">
+  <div class="card">
+    <h2>Welcome</h2>
+    <p>This is the official <b>SHS Social Studies Vacation Assignment</b>. Complete all sections carefully before submission.</p>
+    <button onclick="go('details')">Start Assignment</button>
+  </div>
+</div>
+
+<!-- STUDENT DETAILS -->
+<div class="page" id="details">
+  <div class="card">
+    <h2>Student Details</h2>
+    <label>Full Name</label>
+    <input id="name" required>
+    <label>School Name</label>
+    <input id="school" required>
+    <label>Class</label>
+    <input value="SHS 1" disabled>
+    <label>Index Number</label>
+    <input id="index" required>
+    <button onclick="saveDetails()">Continue</button>
+  </div>
+</div>
+
+<!-- INSTRUCTIONS -->
+<div class="page" id="instructions">
+  <div class="card">
+    <h2>Reading Assignment</h2>
+    <ul>
+      <li>A Geographical and Historical Sketch of Africa</li>
+      <li>Civic Ideals and Practices</li>
+      <li>Indigenous Knowledge Systems</li>
+      <li>Ethics and Ethical Behaviours</li>
+    </ul>
+    <p><b>Microsite:</b> <a href="https://curriculumresources.edu.gh" target="_blank">curriculumresources.edu.gh</a></p>
+    <ol>
+      <li>Open the link above</li>
+      <li>Click on <b>Year 1</b></li>
+      <li>Select <b>Social Studies</b></li>
+      <li>Download the learner material</li>
+    </ol>
+    <button onclick="go('questions')">Proceed to Assignment</button>
+  </div>
+</div>
+
+<!-- QUESTIONS -->
+<div class="page" id="questions">
+  <div class="card">
+    <h2>PART A – Indigenous Knowledge Systems</h2>
+    <label>1. Explain what indigenous technology is.</label>
+    <textarea id="q1"></textarea>
+  </div>
+
+  <div class="card">
+    <h3>2. Indigenous Technologies in Ancient Africa</h3>
+
+    <h4>(a) Metalworking</h4>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAABV7bNHAAAACXBIWXMAAA7EAAAOxAGVKw4bAAA..." alt="Metalworking">
+    <textarea id="q2a" placeholder="Discuss indigenous metalworking and its uses..."></textarea>
+    <input type="file" id="img2a" accept="image/*" onchange="previewImage(event,'preview2a')">
+    <img id="preview2a" src="" alt="Uploaded Metalworking Image">
+
+    <h4>(b) Irrigation System</h4>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAABV7bNHAAAACXBIWXMAAA7EAAAOxAGVKw4bAAA..." alt="Irrigation System">
+    <textarea id="q2b" placeholder="Discuss ancient irrigation systems in Africa..."></textarea>
+    <input type="file" id="img2b" accept="image/*" onchange="previewImage(event,'preview2b')">
+    <img id="preview2b" src="" alt="Uploaded Irrigation Image">
+
+    <h4>(c) Third Illustration</h4>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAABV7bNHAAAACXBIWXMAAA7EAAAOxAGVKw4bAAA..." alt="Third Illustration Placeholder">
+    <textarea id="q2c" placeholder="Discuss the third illustration or concept..."></textarea>
+    <input type="file" id="img2c" accept="image/*" onchange="previewImage(event,'preview2c')">
+    <img id="preview2c" src="" alt="Uploaded Third Image">
+  </div>
+
+  <button onclick="go('result');saveAnswers()">Submit Assignment</button>
+</div>
+
+<!-- RESULT -->
+<div class="page" id="result">
+  <div class="card">
+    <h2>Submission Summary</h2>
+    <p><b>Name:</b> <span id="rName"></span></p>
+    <p><b>School:</b> <span id="rSchool"></span></p>
+    <p><b>Index Number:</b> <span id="rIndex"></span></p>
+    <hr>
+    <h3>Answers Submitted</h3>
+    <p><b>1.</b> <span id="rQ1"></span></p>
+    <p><b>2a.</b> <span id="rQ2a"></span></p>
+    <img id="rImg2a" src="" alt="Metalworking Uploaded Image">
+    <p><b>2b.</b> <span id="rQ2b"></span></p>
+    <img id="rImg2b" src="" alt="Irrigation Uploaded Image">
+    <p><b>2c.</b> <span id="rQ2c"></span></p>
+    <img id="rImg2c" src="" alt="Third Uploaded Image">
+    <hr>
+    <p>Your assignment has been successfully completed. Please print or submit to your teacher.</p>
+    <button onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="footer">© SHS Ghana Curriculum | Academic Use Only</div>
+
+<script>
+function go(page) { document.querySelectorAll(".page").forEach(p => p.classList.remove("active")); document.getElementById(page).classList.add("active"); }
+function saveDetails() {
+  if (!name.value || !school.value || !index.value) { alert("Please fill all fields"); return; }
+  localStorage.setItem("name", name.value);
+  localStorage.setItem("school", school.value);
+  localStorage.setItem("index", index.value);
+  go("instructions");
+}
+function previewImage(event, previewId) {
+  const reader = new FileReader();
+  reader.onload = function() { document.getElementById(previewId).src = reader.result; }
+  reader.readAsDataURL(event.target.files[0]);
+}
+function saveAnswers() {
+  localStorage.setItem("q1", document.getElementById("q1").value);
+  localStorage.setItem("q2a", document.getElementById("q2a").value);
+  localStorage.setItem("q2b", document.getElementById("q2b").value);
+  localStorage.setItem("q2c", document.getElementById("q2c").value);
+  localStorage.setItem("img2a", document.getElementById("preview2a").src);
+  localStorage.setItem("img2b", document.getElementById("preview2b").src);
+  localStorage.setItem("img2c", document.getElementById("preview2c").src);
+
+  document.getElementById("rName").innerText = localStorage.getItem("name") || "";
+  document.getElementById("rSchool").innerText = localStorage.getItem("school") || "";
+  document.getElementById("rIndex").innerText = localStorage.getItem("index") || "";
+  document.getElementById("rQ1").innerText = localStorage.getItem("q1") || "";
+  document.getElementById("rQ2a").innerText = localStorage.getItem("q2a") || "";
+  document.getElementById("rQ2b").innerText = localStorage.getItem("q2b") || "";
+  document.getElementById("rQ2c").innerText = localStorage.getItem("q2c") || "";
+  document.getElementById("rImg2a").src = localStorage.getItem("img2a") || "";
+  document.getElementById("rImg2b").src = localStorage.getItem("img2b") || "";
+  document.getElementById("rImg2c").src = localStorage.getItem("img2c") || "";
+}
+</script>
+
+</body>
+</html>
