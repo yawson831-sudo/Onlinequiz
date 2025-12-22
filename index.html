@@ -131,6 +131,7 @@ img { max-width: 100%; border-radius: 6px; margin-top: 10px; display: none; }
     <p><b>2c.</b> <span id="rQ2c"></span></p>
     <img id="rImg2c" src="" alt="Third Uploaded Image">
     <hr>
+    <p id="rScore"><b>Score:</b> 0 / 4</p>
     <p>Your assignment has been successfully completed. You can print, download as PDF, or send via WhatsApp.</p>
     <button onclick="window.print()">Print</button>
     <button onclick="sendWhatsApp()">Send via WhatsApp</button>
@@ -153,11 +154,13 @@ img { max-width: 100%; border-radius: 6px; margin-top: 10px; display: none; }
 <div class="footer">© SHS Ghana Curriculum | Academic Use Only</div>
 
 <script>
+// NAVIGATION
 function go(page) { 
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active")); 
   document.getElementById(page).classList.add("active"); 
 }
 
+// STUDENT DETAILS
 function saveDetails() {
   const nameEl = document.getElementById("name");
   const schoolEl = document.getElementById("school");
@@ -173,10 +176,7 @@ function saveDetails() {
     }
   });
 
-  if (!valid) {
-    alert("Please fill all fields to continue.");
-    return;
-  }
+  if (!valid) { alert("Please fill all fields to continue."); return; }
 
   const students = JSON.parse(localStorage.getItem("students") || "{}");
   students[indexEl.value] = {
@@ -188,13 +188,15 @@ function saveDetails() {
     q2c: "",
     img2a: "",
     img2b: "",
-    img2c: ""
+    img2c: "",
+    score: 0
   };
   localStorage.setItem("students", JSON.stringify(students));
   localStorage.setItem("currentIndex", indexEl.value);
   go("instructions");
 }
 
+// IMAGE PREVIEW
 function previewImage(event, previewId) {
   const reader = new FileReader();
   reader.onload = function() { 
@@ -205,20 +207,39 @@ function previewImage(event, previewId) {
   reader.readAsDataURL(event.target.files[0]);
 }
 
+// CORRECT ANSWERS
+const correctAnswers = {
+  q1: "Indigenous technology refers to tools, techniques and skills developed by local communities.",
+  q2a: "Metalworking involves the use of metals for tools, weapons, and ornaments.",
+  q2b: "Irrigation systems were used to support agriculture by directing water to crops.",
+  q2c: "Other indigenous technologies include pottery, weaving, and building techniques."
+};
+
+// SAVE ANSWERS AND AUTO-MARK
 function saveAnswers() {
   const index = localStorage.getItem("currentIndex");
   if (!index) return;
   const students = JSON.parse(localStorage.getItem("students") || "{}");
-  
+
+  const q1 = document.getElementById("q1").value.trim();
+  const q2a = document.getElementById("q2a").value.trim();
+  const q2b = document.getElementById("q2b").value.trim();
+  const q2c = document.getElementById("q2c").value.trim();
+
+  // Simple marking (1 mark per correct answer)
+  let score = 0;
+  if (q1.toLowerCase().includes(correctAnswers.q1.toLowerCase())) score++;
+  if (q2a.toLowerCase().includes(correctAnswers.q2a.toLowerCase())) score++;
+  if (q2b.toLowerCase().includes(correctAnswers.q2b.toLowerCase())) score++;
+  if (q2c.toLowerCase().includes(correctAnswers.q2c.toLowerCase())) score++;
+
   students[index] = {
     ...students[index],
-    q1: document.getElementById("q1").value,
-    q2a: document.getElementById("q2a").value,
-    q2b: document.getElementById("q2b").value,
-    q2c: document.getElementById("q2c").value,
+    q1, q2a, q2b, q2c,
     img2a: document.getElementById("preview2a").src,
     img2b: document.getElementById("preview2b").src,
-    img2c: document.getElementById("preview2c").src
+    img2c: document.getElementById("preview2c").src,
+    score
   };
   localStorage.setItem("students", JSON.stringify(students));
 
@@ -226,27 +247,28 @@ function saveAnswers() {
   document.getElementById("rName").innerText = students[index].name;
   document.getElementById("rSchool").innerText = students[index].school;
   document.getElementById("rIndex").innerText = index;
-  document.getElementById("rQ1").innerText = students[index].q1;
-  document.getElementById("rQ2a").innerText = students[index].q2a;
-  document.getElementById("rQ2b").innerText = students[index].q2b;
-  document.getElementById("rQ2c").innerText = students[index].q2c;
+  document.getElementById("rQ1").innerText = q1;
+  document.getElementById("rQ2a").innerText = q2a;
+  document.getElementById("rQ2b").innerText = q2b;
+  document.getElementById("rQ2c").innerText = q2c;
   document.getElementById("rImg2a").src = students[index].img2a;
   document.getElementById("rImg2b").src = students[index].img2b;
   document.getElementById("rImg2c").src = students[index].img2c;
   document.getElementById("rImg2a").style.display = students[index].img2a ? "block" : "none";
   document.getElementById("rImg2b").style.display = students[index].img2b ? "block" : "none";
   document.getElementById("rImg2c").style.display = students[index].img2c ? "block" : "none";
+  document.getElementById("rScore").innerHTML = `<b>Score:</b> ${score} / 4`;
 }
 
-// WhatsApp submission
+// WhatsApp submission with score
 function sendWhatsApp() {
   const index = localStorage.getItem("currentIndex");
   if (!index) return;
   const students = JSON.parse(localStorage.getItem("students") || "{}");
   const s = students[index];
 
-  const message = `SHS Social Studies Assignment Submission\n\nName: ${s.name}\nSchool: ${s.school}\nIndex Number: ${index}\n\nAnswers:\n1. ${s.q1}\n2a. ${s.q2a}\n2b. ${s.q2b}\n2c. ${s.q2c}`;
-  const phoneNumber = "233208333632";
+  const message = `SHS Social Studies Assignment Submission\n\nName: ${s.name}\nSchool: ${s.school}\nIndex Number: ${index}\nScore: ${s.score}/4\n\nAnswers:\n1. ${s.q1}\n2a. ${s.q2a}\n2b. ${s.q2b}\n2c. ${s.q2c}`;
+  const phoneNumber = "233208333632"; // WhatsApp number
   const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank");
 }
@@ -256,10 +278,7 @@ function checkPortal() {
   const inputIndex = document.getElementById("portalIndex").value.trim();
   const portalResult = document.getElementById("portalResult");
   
-  if (!inputIndex) {
-    alert("Please enter an index number.");
-    return;
-  }
+  if (!inputIndex) { alert("Please enter an index number."); return; }
 
   const students = JSON.parse(localStorage.getItem("students") || "{}");
   if (students[inputIndex]) {
@@ -268,6 +287,7 @@ function checkPortal() {
       <h3>Results for Index Number: ${inputIndex}</h3>
       <p><b>Name:</b> ${s.name}</p>
       <p><b>School:</b> ${s.school}</p>
+      <p><b>Score:</b> ${s.score}/4</p>
       <hr>
       <h4>Answers:</h4>
       <p><b>1.</b> ${s.q1}</p>
@@ -299,7 +319,8 @@ function downloadPortalPDF() {
   doc.setFontSize(12);
   doc.text(`Name: ${s.name}`, 10, y); y+=7;
   doc.text(`School: ${s.school}`, 10, y); y+=7;
-  doc.text(`Index Number: ${inputIndex}`, 10, y); y+=10;
+  doc.text(`Index Number: ${inputIndex}`, 10, y); y+=7;
+  doc.text(`Score: ${s.score}/4`, 10, y); y+=10;
   doc.text("Answers:", 10, y); y+=7;
   doc.text(`1. ${s.q1}`, 10, y); y+=7;
   doc.text(`2a. ${s.q2a}`, 10, y); y+=7;
