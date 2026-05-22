@@ -1,929 +1,503 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>  <html lang="en">  
+<head>  <meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>SHS Ghana Curriculum | Social Studies Assignment</title>  <!-- GOOGLE FONT -->  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <!-- PDF -->  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>  <style>  
+  
+/* BODY */  
+body{  
+  margin:0;  
+  font-family:"Poppins",sans-serif;  
+  
+  background:url('images/Screenshot_20260522-114440.jpg') center/cover no-repeat fixed;  
+  
+  color:white;  
+  overflow-x:hidden;  
+}  
+  
+/* DARK OVERLAY */  
+body::before{  
+  content:"";  
+  position:fixed;  
+  inset:0;  
+  background:rgba(0,0,0,0.6);  
+  z-index:-1;  
+}  
+  
+/* LOADER */  
+#loader{  
+  position:fixed;  
+  width:100%;  
+  height:100vh;  
+  background:#020617;  
+  display:flex;  
+  justify-content:center;  
+  align-items:center;  
+  z-index:9999;  
+  font-size:24px;  
+  font-weight:700;  
+}  
+  
+/* HEADER */  
+header{  
+  background:rgba(15,23,42,0.7);  
+  
+  backdrop-filter:blur(18px);  
+  -webkit-backdrop-filter:blur(18px);  
+  
+  border-bottom:1px solid rgba(255,255,255,0.1);  
+  
+  padding:20px;  
+  
+  text-align:center;  
+  
+  position:sticky;  
+  top:0;  
+  z-index:1000;  
+  
+  box-shadow:0 8px 30px rgba(0,0,0,0.35);  
+}  
+  
+/* TITLE */  
+.main-title{  
+  margin:0;  
+  
+  font-size:38px;  
+  font-weight:800;  
+  
+  background:linear-gradient(to right,#ffffff,#38bdf8);  
+  
+  -webkit-background-clip:text;  
+  -webkit-text-fill-color:transparent;  
+}  
+  
+/* SUBTEXT */  
+header p{  
+  margin-top:8px;  
+  color:#e2e8f0;  
+}  
+  
+/* CLOCK */  
+#clock{  
+  margin-top:10px;  
+  font-size:20px;  
+  color:#7dd3fc;  
+  font-weight:700;  
+}  
+  
+/* NAV */  
+.nav-btns{  
+  margin-top:15px;  
+}  
+  
+.nav-btns button{  
+  margin:6px;  
+}  
+  
+/* PAGE */  
+.page{  
+  display:none;  
+  padding:25px;  
+  max-width:950px;  
+  margin:auto;  
+  animation:fade 0.5s ease;  
+}  
+  
+.page.active{  
+  display:block;  
+}  
+  
+/* FADE */  
+@keyframes fade{  
+  from{  
+    opacity:0;  
+    transform:translateY(15px);  
+  }  
+  
+  to{  
+    opacity:1;  
+    transform:translateY(0);  
+  }  
+}  
+  
+/* CARD */  
+.card{  
+  background:rgba(255,255,255,0.12);  
+  
+  backdrop-filter:blur(18px);  
+  
+  border:1px solid rgba(255,255,255,0.12);  
+  
+  padding:25px;  
+  
+  border-radius:24px;  
+  
+  margin-bottom:25px;  
+  
+  box-shadow:0 10px 40px rgba(0,0,0,0.4);  
+  
+  transition:0.3s ease;  
+}  
+  
+.card:hover{  
+  transform:translateY(-5px);  
+}  
+  
+/* BUTTON */  
+button{  
+  background:linear-gradient(135deg,#2563eb,#06b6d4);  
+  
+  color:white;  
+  
+  border:none;  
+  
+  padding:13px 24px;  
+  
+  border-radius:14px;  
+  
+  font-size:15px;  
+  font-weight:600;  
+  
+  cursor:pointer;  
+  
+  transition:0.3s ease;  
+  
+  margin-top:8px;  
+}  
+  
+button:hover{  
+  transform:translateY(-3px) scale(1.03);  
+  
+  box-shadow:0 10px 30px rgba(6,182,212,0.5);  
+}  
+  
+/* INPUTS */  
+input,  
+textarea,  
+select{  
+  width:100%;  
+  
+  padding:14px;  
+  
+  margin-top:8px;  
+  margin-bottom:18px;  
+  
+  border-radius:14px;  
+  
+  border:none;  
+  outline:none;  
+  
+  background:rgba(255,255,255,0.92);  
+  
+  font-size:15px;  
+  
+  font-family:"Poppins",sans-serif;  
+  
+  color:#0f172a;  
+  
+  box-shadow:0 4px 18px rgba(0,0,0,0.2);  
+}  
+  
+textarea{  
+  min-height:130px;  
+  resize:none;  
+}  
+  
+/* IMAGES */  
+img{  
+  max-width:100%;  
+  border-radius:14px;  
+  margin-top:12px;  
+  display:none;  
+  box-shadow:0 6px 25px rgba(0,0,0,0.4);  
+}  
+  
+/* FOOTER */  
+.footer{  
+  text-align:center;  
+  color:#e2e8f0;  
+  padding:25px;  
+}  
+  
+/* SCROLLBAR */  
+::-webkit-scrollbar{  
+  width:10px;  
+}  
+  
+::-webkit-scrollbar-track{  
+  background:#020617;  
+}  
+  
+::-webkit-scrollbar-thumb{  
+  background:linear-gradient(#2563eb,#06b6d4);  
+  border-radius:20px;  
+}  
+  
+</style>  </head>  <body>  <!-- LOADER -->  <div id="loader">  
+  Loading SHS Portal...  
+</div>  <!-- HEADER -->  <header>    <h1 class="main-title">  
+    SHS Ghana Curriculum  
+  </h1>    <p>  
+    Social Studies – SHS 1 | Vacation Assignment  
+  </p>    <h3 id="clock"></h3>    <div class="nav-btns">  <button onclick="go('home')">  
+  Home  
+</button>  
 
-<head>
+<button onclick="go('details')">  
+  Start Assignment  
+</button>  
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>SHS Ghana Curriculum | Social Studies Assignment</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-html{
-scroll-behavior:smooth;
-}
-
-body{
-font-family:"Poppins",sans-serif;
-background:url('images/Screenshot_20260522-114440.jpg') center/cover no-repeat fixed;
-color:white;
-overflow-x:hidden;
-}
-
-/* OVERLAY */
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.65);
-z-index:-1;
-}
-
-/* PARTICLES */
-#particles-js{
-position:fixed;
-width:100%;
-height:100%;
-top:0;
-left:0;
-z-index:-2;
-}
-
-/* LOADER */
-#loader{
-position:fixed;
-width:100%;
-height:100vh;
-background:#020617;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:25px;
-font-weight:700;
-z-index:999999;
-}
-
-/* HEADER */
-header{
-background:rgba(15,23,42,0.6);
-backdrop-filter:blur(18px);
-padding:20px;
-text-align:center;
-position:sticky;
-top:0;
-z-index:1000;
-border-bottom:1px solid rgba(255,255,255,0.1);
-box-shadow:0 10px 40px rgba(0,0,0,0.4);
-}
-
-/* TITLE */
-.main-title{
-font-size:38px;
-font-weight:800;
-background:linear-gradient(to right,#ffffff,#38bdf8);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:glow 2s infinite alternate;
-}
-
-@keyframes glow{
-from{
-text-shadow:0 0 10px #38bdf8;
-}
-to{
-text-shadow:0 0 30px #06b6d4;
-}
-}
-
-/* CLOCK */
-#clock{
-margin-top:10px;
-font-size:20px;
-font-weight:700;
-color:#7dd3fc;
-}
-
-/* NAV */
-.nav-btns{
-margin-top:15px;
-}
-
-.nav-btns button{
-margin:5px;
-}
-
-/* PAGE */
-.page{
-display:none;
-padding:25px;
-max-width:950px;
-margin:auto;
-animation:fade 0.5s ease;
-}
-
-.page.active{
-display:block;
-}
-
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-/* CARD */
-.card{
-background:rgba(255,255,255,0.12);
-backdrop-filter:blur(18px);
-padding:25px;
-border-radius:24px;
-margin-bottom:25px;
-border:1px solid rgba(255,255,255,0.12);
-box-shadow:0 10px 40px rgba(0,0,0,0.4);
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-6px) scale(1.01);
-}
-
-/* BUTTON */
-button{
-background:linear-gradient(135deg,#2563eb,#06b6d4);
-color:white;
-border:none;
-padding:14px 24px;
-border-radius:14px;
-font-size:15px;
-font-weight:600;
-cursor:pointer;
-transition:0.3s;
-margin-top:10px;
-}
-
-button:hover{
-transform:translateY(-3px);
-letter-spacing:1px;
-box-shadow:0 10px 30px rgba(6,182,212,0.5);
-}
-
-/* INPUTS */
-input,
-textarea,
-select{
-width:100%;
-padding:14px;
-margin-top:8px;
-margin-bottom:18px;
-border:none;
-outline:none;
-border-radius:14px;
-font-size:15px;
-font-family:"Poppins",sans-serif;
-background:rgba(255,255,255,0.9);
-color:#0f172a;
-}
-
-textarea{
-min-height:130px;
-resize:none;
-}
-
-/* IMAGES */
-img{
-max-width:100%;
-border-radius:14px;
-margin-top:10px;
-display:none;
-box-shadow:0 8px 30px rgba(0,0,0,0.4);
-}
-
-/* PROGRESS */
-.progress-container{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:7px;
-background:#0f172a;
-z-index:999999;
-}
-
-.progress-bar{
-height:100%;
-width:0%;
-background:linear-gradient(to right,#06b6d4,#2563eb);
-}
-
-/* TOAST */
-#toast{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#06b6d4;
-padding:15px 25px;
-border-radius:15px;
-display:none;
-z-index:999999;
-}
-
-/* FAB */
-.fab{
-position:fixed;
-bottom:20px;
-left:20px;
-width:60px;
-height:60px;
-border-radius:50%;
-font-size:24px;
-z-index:999999;
-}
-
-/* FOOTER */
-.footer{
-text-align:center;
-padding:25px;
-color:#e2e8f0;
-}
-
-/* LIGHT MODE */
-.light{
-background:#f1f5f9;
-color:#0f172a;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<!-- PARTICLES -->
-<div id="particles-js"></div>
-
-<!-- LOADER -->
-<div id="loader">
-Loading SHS Portal...
-</div>
-
-<!-- TOAST -->
-<div id="toast">
-Submitted Successfully ✅
-</div>
-
-<!-- PROGRESS -->
-<div class="progress-container">
-<div class="progress-bar" id="progressBar"></div>
-</div>
-
-<!-- FLOATING BUTTON -->
-<button class="fab" onclick="go('home')">
-⌂
+<button onclick="go('portal')">  
+  Results Portal  
 </button>
 
-<!-- MUSIC -->
-<audio autoplay loop>
-<source src="music.mp3" type="audio/mp3">
-</audio>
+  </div>  </header>  <!-- HOME -->  <div class="page active" id="home">    <div class="card">  <h2>Welcome 👋</h2>  
 
-<!-- HEADER -->
-<header>
+<p>  
+  This is the official SHS Social Studies Vacation Assignment.  
+  Complete all sections carefully before submission.  
+</p>  
 
-<h1 class="main-title">
-SHS Ghana Curriculum
-</h1>
-
-<p>
-Social Studies – SHS 1 Vacation Assignment
-</p>
-
-<h3 id="clock"></h3>
-
-<div class="nav-btns">
-
-<button onclick="go('home')">
-Home
+<button onclick="go('details')">  
+  Start Assignment  
 </button>
 
-<button onclick="go('details')">
-Assignment
+  </div>  </div>  <!-- DETAILS -->  <div class="page" id="details">    <div class="card">  <h2>Student Details</h2>  
+
+<label>Full Name</label>  
+<input id="name">  
+
+<label>School Name</label>  
+<input id="school">  
+
+<label>Index Number</label>  
+
+<select id="index">  
+  <option value="">Select Index Number</option>  
+</select>  
+
+<button onclick="saveDetails()">  
+  Continue  
 </button>
 
-<button onclick="go('portal')">
-Portal
+  </div>  </div>  <!-- QUESTIONS -->  <div class="page" id="questions">    <div class="card">  <h2>Questions</h2>  
+
+<label>  
+  1. Explain indigenous technology  
+</label>  
+
+<textarea id="q1"></textarea>  
+
+<label>  
+  Upload Image  
+</label>  
+
+<input  
+  type="file"  
+  accept="image/*"  
+  onchange="previewImage(event,'preview1')"  
+>  
+
+<img id="preview1">  
+
+<button onclick="submitAssignment()">  
+  Submit Assignment  
 </button>
 
-</div>
+  </div>  </div>  <!-- RESULT -->  <div class="page" id="result">    <div class="card">  <h2>Submission Summary ✅</h2>  
 
-</header>
+<p>  
+  <b>Name:</b>  
+  <span id="rName"></span>  
+</p>  
 
-<!-- LOGIN -->
-<div class="page active" id="login">
+<p>  
+  <b>School:</b>  
+  <span id="rSchool"></span>  
+</p>  
 
-<div class="card">
+<p>  
+  <b>Index:</b>  
+  <span id="rIndex"></span>  
+</p>  
 
-<h2>
-Student Login 🔐
-</h2>
+<p>  
+  <b>Answer:</b>  
+  <span id="rQ1"></span>  
+</p>  
 
-<label>Name</label>
-<input type="text" id="loginName">
+<img id="rImg">  
 
-<label>Password</label>
-<input type="password" id="loginPassword">
+<button onclick="window.print()">  
+  Print  
+</button>  
 
-<button onclick="loginStudent()">
-Login
+<button onclick="sendWhatsApp()">  
+  WhatsApp  
 </button>
 
-</div>
+  </div>  </div>  <!-- PORTAL -->  <div class="page" id="portal">    <div class="card">  <h2>Results Portal</h2>  
 
-</div>
+<input  
+  id="portalIndex"  
+  placeholder="Enter Index Number"  
+>  
 
-<!-- HOME -->
-<div class="page" id="home">
-
-<div class="card">
-
-<h2>
-Welcome 👋
-</h2>
-
-<p>
-Complete your SHS assignment carefully before submission.
-</p>
-
-<button onclick="go('details')">
-Start Assignment
-</button>
-
-</div>
-
-</div>
-
-<!-- DETAILS -->
-<div class="page" id="details">
-
-<div class="card">
-
-<h2>
-Student Details
-</h2>
-
-<label>Full Name</label>
-<input id="name">
-
-<label>School Name</label>
-<input id="school">
-
-<label>Index Number</label>
-
-<select id="index">
-<option value="">
-Select Index Number
-</option>
-</select>
-
-<button onclick="saveDetails()">
-Continue
-</button>
-
-</div>
-
-</div>
-
-<!-- QUESTIONS -->
-<div class="page" id="questions">
-
-<div class="card">
-
-<h2>
-Questions
-</h2>
-
-<label>
-1. Explain indigenous technology
-</label>
-
-<textarea id="q1"></textarea>
-
-<label>
-2. Explain culture and traditions
-</label>
-
-<textarea id="q2"></textarea>
-
-<label>
-3. Mention 4 indigenous technologies
-</label>
-
-<textarea id="q3"></textarea>
-
-<label>
-4. What is socialization?
-</label>
-
-<textarea id="q4"></textarea>
-
-<label>
-5. Explain national unity
-</label>
-
-<textarea id="q5"></textarea>
-
-<label>
-Upload Assignment Image
-</label>
-
-<input
-type="file"
-accept="image/*"
-onchange="previewImage(event,'preview1')"
->
-
-<img id="preview1">
-
-<label>
-Upload Profile Picture
-</label>
-
-<input
-type="file"
-accept="image/*"
-onchange="previewImage(event,'profilePreview')"
->
-
-<img id="profilePreview">
-
-<button onclick="submitAssignment()">
-Submit Assignment
-</button>
-
-<button onclick="downloadPDF()">
-Download PDF
-</button>
-
-<button onclick="toggleMode()">
-Toggle Mode
-</button>
-
-</div>
-
-</div>
-
-<!-- RESULT -->
-<div class="page" id="result">
-
-<div class="card">
-
-<h2>
-Submission Summary ✅
-</h2>
-
-<p>
-<b>Name:</b>
-<span id="rName"></span>
-</p>
-
-<p>
-<b>School:</b>
-<span id="rSchool"></span>
-</p>
-
-<p>
-<b>Index:</b>
-<span id="rIndex"></span>
-</p>
-
-<p>
-<b>Score:</b>
-<span id="rScore"></span>
-</p>
-
-<img id="rImg">
-
-<button onclick="window.print()">
-Print
-</button>
-
-<button onclick="sendWhatsApp()">
-WhatsApp
-</button>
-
-</div>
-
-</div>
-
-<!-- PORTAL -->
-<div class="page" id="portal">
-
-<div class="card">
-
-<h2>
-Results Portal
-</h2>
-
-<input
-id="portalIndex"
-placeholder="Enter Index Number"
->
-
-<input
-type="text"
-id="searchStudent"
-placeholder="Search Student"
->
-
-<button onclick="checkPortal()">
-Check Result
-</button>
+<button onclick="checkPortal()">  
+  Check Result  
+</button>  
 
 <div id="portalResult"></div>
 
-</div>
-
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-Made with ❤️ by Ernest Ernie
-</div>
-
-<script>
-
-/* LOADER */
-window.addEventListener("load",()=>{
-
-document.getElementById("loader").style.display="none";
-
-});
-
-/* CLOCK */
-setInterval(()=>{
-
-const now=new Date();
-
-document.getElementById("clock").innerHTML=
-
-now.toLocaleDateString()+
-" | "+
-now.toLocaleTimeString();
-
-},1000);
-
-/* NAVIGATION */
-function go(page){
-
-document.querySelectorAll(".page")
-.forEach(p=>p.classList.remove("active"));
-
-document.getElementById(page)
-.classList.add("active");
-
-}
-
-/* LOGIN */
-function loginStudent(){
-
-const name=
-document.getElementById("loginName").value;
-
-const pass=
-document.getElementById("loginPassword").value;
-
-if(name && pass){
-
-alert("Login Successful ✅");
-
-go("home");
-
-}else{
-
-alert("Enter Login Details");
-
-}
-
-}
-
-/* GENERATE INDEX */
-function generateIndexNumbers(){
-
-const select=
-document.getElementById("index");
-
-for(let i=0;i<10;i++){
-
-let num=
-Math.floor(100000+Math.random()*900000);
-
-let option=
-document.createElement("option");
-
-option.value=num;
-option.text=num;
-
-select.add(option);
-
-}
-
-}
-
-generateIndexNumbers();
-
-/* SAVE DETAILS */
-function saveDetails(){
-
-const name=
-document.getElementById("name").value;
-
-const school=
-document.getElementById("school").value;
-
-const index=
-document.getElementById("index").value;
-
-localStorage.setItem("studentName",name);
-
-localStorage.setItem("studentSchool",school);
-
-localStorage.setItem("studentIndex",index);
-
-go("questions");
-
-}
-
-/* IMAGE PREVIEW */
-function previewImage(event,id){
-
-const reader=new FileReader();
-
-reader.onload=function(){
-
-const img=
-document.getElementById(id);
-
-img.src=reader.result;
-
-img.style.display="block";
-
-}
-
-reader.readAsDataURL(event.target.files[0]);
-
-}
-
-/* TOAST */
-function showToast(){
-
-const toast=
-document.getElementById("toast");
-
-toast.style.display="block";
-
-setTimeout(()=>{
-
-toast.style.display="none";
-
-},3000);
-
-}
-
-/* SUBMIT */
-function submitAssignment(){
-
-const q1=
-document.getElementById("q1").value;
-
-const q2=
-document.getElementById("q2").value;
-
-const q3=
-document.getElementById("q3").value;
-
-const q4=
-document.getElementById("q4").value;
-
-const q5=
-document.getElementById("q5").value;
-
-const img=
-document.getElementById("preview1").src;
-
-let score=0;
-
-if(q1.length>20){score+=20;}
-if(q2.length>20){score+=20;}
-if(q3.length>20){score+=20;}
-if(q4.length>20){score+=20;}
-if(q5.length>20){score+=20;}
-
-localStorage.setItem("score",score);
-
-document.getElementById("rName").innerText=
-localStorage.getItem("studentName");
-
-document.getElementById("rSchool").innerText=
-localStorage.getItem("studentSchool");
-
-document.getElementById("rIndex").innerText=
-localStorage.getItem("studentIndex");
-
-document.getElementById("rScore").innerText=
-score+"%";
-
-document.getElementById("rImg").src=img;
-
-document.getElementById("rImg").style.display="block";
-
-showToast();
-
-go("result");
-
-}
-
-/* PDF */
-function downloadPDF(){
-
-const { jsPDF }=window.jspdf;
-
-const doc=new jsPDF();
-
-doc.setFontSize(22);
-
-doc.text(
-"SHS Ghana Curriculum",
-20,
-20
-);
-
-doc.setFontSize(14);
-
-doc.text(
-"Student: "+
-localStorage.getItem("studentName"),
-20,
-40
-);
-
-doc.text(
-"School: "+
-localStorage.getItem("studentSchool"),
-20,
-50
-);
-
-doc.text(
-"Index: "+
-localStorage.getItem("studentIndex"),
-20,
-60
-);
-
-doc.text(
-"Score: "+
-localStorage.getItem("score")+"%",
-20,
-70
-);
-
-doc.save("SHS_Assignment.pdf");
-
-}
-
-/* TOGGLE MODE */
-function toggleMode(){
-
-document.body.classList.toggle("light");
-
-}
-
-/* WHATSAPP */
-function sendWhatsApp(){
-
-const message=
-
-`SHS Assignment
-
-Name:
-${localStorage.getItem("studentName")}
-
-School:
-${localStorage.getItem("studentSchool")}
-
-Index:
-${localStorage.getItem("studentIndex")}
-
-Score:
-${localStorage.getItem("score")}%
-`;
-
-window.open(
-
-`https://wa.me/233208333632?text=${encodeURIComponent(message)}`,
-
-"_blank"
-
-);
-
-}
-
-/* RESULT PORTAL */
-function checkPortal(){
-
-document.getElementById("portalResult")
-.innerHTML=
-
-`
-<p>
-<b>Name:</b>
-${localStorage.getItem("studentName")}
-</p>
-
-<p>
-<b>School:</b>
-${localStorage.getItem("studentSchool")}
-</p>
-
-<p>
-<b>Score:</b>
-${localStorage.getItem("score")}%
-</p>
-`;
-
-}
-
-/* PROGRESS BAR */
-window.addEventListener("scroll",()=>{
-
-let scrollTop=
-document.documentElement.scrollTop;
-
-let height=
-document.documentElement.scrollHeight-
-document.documentElement.clientHeight;
-
-let progress=
-(scrollTop/height)*100;
-
-document.getElementById("progressBar")
-.style.width=progress+"%";
-
-});
-
-/* SEARCH */
-document
-.getElementById("searchStudent")
-.addEventListener("keyup",function(){
-
-let value=
-this.value.toLowerCase();
-
-if(
-localStorage
-.getItem("studentName")
-?.toLowerCase()
-.includes(value)
-){
-
-console.log("Student Found");
-
-}
-
-});
-
-/* PARTICLES */
-particlesJS("particles-js",{
-
-particles:{
-
-number:{
-value:80
-},
-
-size:{
-value:3
-}
-
-}
-
-});
-
-/* TIMER */
-setTimeout(()=>{
-
-alert("Assignment Time Up ⏰");
-
-},600000);
-
-</script>
-
-</body>
-  </html>
+  </div>  </div>  <!-- FOOTER -->  <div class="footer">  
+  © SHS Ghana Curriculum | Academic Use Only  
+</div>  <script>  
+  
+/* LOADER */  
+window.addEventListener("load",()=>{  
+  document.getElementById("loader").style.display="none";  
+});  
+  
+/* CLOCK */  
+setInterval(()=>{  
+  document.getElementById("clock").innerText=  
+  new Date().toLocaleTimeString();  
+},1000);  
+  
+/* NAVIGATION */  
+function go(page){  
+  
+  document.querySelectorAll(".page")  
+  .forEach(p=>p.classList.remove("active"));  
+  
+  document.getElementById(page)  
+  .classList.add("active");  
+}  
+  
+/* GENERATE INDEX */  
+function generateIndexNumbers(){  
+  
+  const select=document.getElementById("index");  
+  
+  for(let i=0;i<10;i++){  
+  
+    let num=  
+    Math.floor(100000+Math.random()*900000);  
+  
+    let option=  
+    document.createElement("option");  
+  
+    option.value=num;  
+    option.text=num;  
+  
+    select.add(option);  
+  }  
+}  
+  
+generateIndexNumbers();  
+  
+/* SAVE DETAILS */  
+function saveDetails(){  
+  
+  const name=  
+  document.getElementById("name").value;  
+  
+  const school=  
+  document.getElementById("school").value;  
+  
+  const index=  
+  document.getElementById("index").value;  
+  
+  localStorage.setItem("studentName",name);  
+  localStorage.setItem("studentSchool",school);  
+  localStorage.setItem("studentIndex",index);  
+  
+  go("questions");  
+}  
+  
+/* IMAGE PREVIEW */  
+function previewImage(event,id){  
+  
+  const reader=new FileReader();  
+  
+  reader.onload=function(){  
+  
+    const img=document.getElementById(id);  
+  
+    img.src=reader.result;  
+  
+    img.style.display="block";  
+  }  
+  
+  reader.readAsDataURL(event.target.files[0]);  
+}  
+  
+/* SUBMIT */  
+function submitAssignment(){  
+  
+  const q1=  
+  document.getElementById("q1").value;  
+  
+  const img=  
+  document.getElementById("preview1").src;  
+  
+  localStorage.setItem("answer",q1);  
+  localStorage.setItem("image",img);  
+  
+  document.getElementById("rName").innerText=  
+  localStorage.getItem("studentName");  
+  
+  document.getElementById("rSchool").innerText=  
+  localStorage.getItem("studentSchool");  
+  
+  document.getElementById("rIndex").innerText=  
+  localStorage.getItem("studentIndex");  
+  
+  document.getElementById("rQ1").innerText=q1;  
+  
+  document.getElementById("rImg").src=img;  
+  
+  if(img){  
+    document.getElementById("rImg").style.display="block";  
+  }  
+  
+  go("result");  
+}  
+  
+/* WHATSAPP */  
+function sendWhatsApp(){  
+  
+  const message=  
+`SHS Assignment  
+  
+Name: ${localStorage.getItem("studentName")}  
+  
+School: ${localStorage.getItem("studentSchool")}  
+  
+Index: ${localStorage.getItem("studentIndex")}  
+  
+Answer:  
+${localStorage.getItem("answer")}`;  
+  
+  window.open(  
+  `https://wa.me/233208333632?text=${encodeURIComponent(message)}`,  
+  "_blank"  
+  );  
+}  
+  
+/* PORTAL */  
+function checkPortal(){  
+  
+  const result=  
+  document.getElementById("portalResult");  
+  
+  result.innerHTML=  
+  `  
+  <p><b>Name:</b> ${localStorage.getItem("studentName")}</p>  
+  
+  <p><b>School:</b> ${localStorage.getItem("studentSchool")}</p>  
+  
+  <p><b>Answer:</b> ${localStorage.getItem("answer")}</p>  
+  `;  
+}  
+  
+</script>  </body>  
+</html>
