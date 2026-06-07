@@ -496,14 +496,46 @@ const correctAnswers={
   q2c:"pottery"
 };
 
-/* SUBMIT */
+  /* SUBMIT */
 function submitAssignment(){
 
   saveAnswers();
 
-  alert("Assignment Submitted Successfully ✅");
+  const index = localStorage.getItem("currentIndex");
 
-  go("result");
+  if(!index) return;
+
+  const students =
+  JSON.parse(localStorage.getItem("students") || "{}");
+
+  const s = students[index];
+
+  const message =
+`📘 SHS Assignment Submission
+
+👤 Name: ${s.name}
+🏫 School: ${s.school}
+🆔 Index: ${index}
+
+📝 Answers Submitted:
+1. ${s.q1}
+
+2a. ${s.q2a}
+2b. ${s.q2b}
+2c. ${s.q2c}
+
+✅ Score: ${s.score}/4`;
+
+  const phoneNumber = "233208333632";
+
+  const url =
+`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  // Opens WhatsApp immediately
+  window.open(url, "_blank");
+
+  // Optional success message
+  alert("Assignment submitted successfully ✅ Redirecting to WhatsApp...");
 }
 
 /* SAVE ANSWERS */
