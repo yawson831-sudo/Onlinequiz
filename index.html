@@ -549,34 +549,11 @@ questions[i]
 });
 
 /* SEND TO YOUR WHATSAPP */
-const msg =
-
-`📘 SHS ASSIGNMENT
-
-👤 Name:
-${s.name}
-
-🏫 School:
-${s.school}
-
-📞 Phone:
-${s.phone}
-
-🆔 Index:
-${s.index}
-
-----------------
-
-${answersText}
-
-✅ Submitted Successfully`;
-
-window.open(
-`https://wa.me/233208333632?text=${
-encodeURIComponent(msg)
-}`,
-"_blank"
+alert(
+"Assignment submitted successfully ✅"
 );
+
+go("home");
 
 alert(
 "Assignment Submitted ✅"
