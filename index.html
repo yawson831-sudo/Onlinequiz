@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>School App</title>
+<title>School Results App</title>
 
 <style>
 body{
@@ -13,7 +13,6 @@ body{
   color:white;
 }
 
-/* TOP BAR */
 header{
   background:#1e293b;
   padding:15px;
@@ -21,7 +20,6 @@ header{
   font-weight:bold;
 }
 
-/* NAV BAR */
 nav{
   position:fixed;
   bottom:0;
@@ -36,10 +34,8 @@ nav button{
   border:none;
   background:none;
   color:white;
-  font-size:14px;
 }
 
-/* PAGES */
 .page{
   display:none;
   padding:20px;
@@ -50,15 +46,13 @@ nav button{
   display:block;
 }
 
-/* CARD */
 .card{
   background:#111827;
-  padding:15px;
+  padding:12px;
   border-radius:10px;
   margin-top:10px;
 }
 
-/* INPUT */
 input{
   width:100%;
   padding:12px;
@@ -67,7 +61,6 @@ input{
   border-radius:6px;
 }
 
-/* BUTTON */
 button.action{
   width:100%;
   padding:12px;
@@ -78,19 +71,21 @@ button.action{
   border-radius:6px;
 }
 
-/* ADMIN */
-#adminPage{display:none}
-.smallBtn{
-  background:#38bdf8;
+.resultBox{
+  background:#111827;
+  padding:10px;
+  margin-top:10px;
+  border-radius:8px;
+  display:none;
 }
 </style>
 </head>
 
 <body>
 
-<header>📱 School Mobile App</header>
+<header>📱 School Results System</header>
 
-<!-- HOME PAGE -->
+<!-- HOME -->
 <div id="home" class="page active">
 
 <h3>🎓 Check Result</h3>
@@ -98,13 +93,13 @@ button.action{
 <input id="indexInput" placeholder="Enter Index Number">
 <button class="action" onclick="checkResult()">Search</button>
 
-<div class="card" id="resultCard" style="display:none">
+<div class="resultBox" id="resultBox">
 <p id="resultText"></p>
 </div>
 
 </div>
 
-<!-- RESULTS PAGE -->
+<!-- RESULTS -->
 <div id="results" class="page">
 
 <h3>📊 All Results</h3>
@@ -112,13 +107,13 @@ button.action{
 
 </div>
 
-<!-- ADMIN PAGE -->
+<!-- ADMIN -->
 <div id="admin" class="page">
 
 <h3>🧑‍🏫 Admin Login</h3>
 
-<input type="password" id="adminPass" placeholder="Enter Password">
-<button class="action" onclick="loginAdmin()">Login</button>
+<input type="password" id="pass" placeholder="Enter Password">
+<button class="action" onclick="login()">Login</button>
 
 <div id="adminPanel" style="display:none">
 
@@ -128,7 +123,7 @@ button.action{
 <input id="aName" placeholder="Name">
 <input id="aScore" placeholder="Score">
 
-<button class="action" onclick="addStudent()">Add</button>
+<button class="action" onclick="addStudent()">Add Student</button>
 
 <p id="msg"></p>
 
@@ -138,9 +133,9 @@ button.action{
 
 <!-- NAV -->
 <nav>
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('results')">Results</button>
-<button onclick="showPage('admin')">Admin</button>
+<button onclick="show('home')">Home</button>
+<button onclick="show('results'); loadAll()">Results</button>
+<button onclick="show('admin')">Admin</button>
 </nav>
 
 <script>
@@ -151,35 +146,36 @@ let students = JSON.parse(localStorage.getItem("students")) || [
 ];
 
 // PAGE SWITCH
-function showPage(page){
+function show(page){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById(page).classList.add("active");
-
-  if(page==="results") loadAll();
 }
 
 // CHECK RESULT
 function checkResult(){
   let index = document.getElementById("indexInput").value;
-  let found = students.find(s=>s.index===index);
 
-  let card = document.getElementById("resultCard");
+  let data = JSON.parse(localStorage.getItem("students")) || students;
+
+  let found = data.find(s=>s.index===index);
+
+  let box = document.getElementById("resultBox");
   let text = document.getElementById("resultText");
 
   if(!found){
     text.innerHTML="❌ Not Found";
-    card.style.display="block";
+    box.style.display="block";
     return;
   }
 
   text.innerHTML=`
   <b>${found.name}</b><br>
-  Index: ${found.index}<br>
+  ${found.index}<br>
   Score: ${found.score}<br>
   Grade: ${found.grade}
   `;
 
-  card.style.display="block";
+  box.style.display="block";
 
   sendWhatsApp(found);
 }
@@ -188,17 +184,24 @@ function checkResult(){
 function sendWhatsApp(s){
   let phone="233208333632";
 
-  let msg=`Result Ready:%0A${s.name}%0A${s.score}%0A${s.grade}`;
+  let msg=`Result:%0A${s.name}%0A${s.score}%0A${s.grade}`;
 
   window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
 }
 
-// LOAD ALL RESULTS
+// LOAD ALL (FIXED)
 function loadAll(){
   let div=document.getElementById("allResults");
   div.innerHTML="";
 
-  students.forEach(s=>{
+  let data = JSON.parse(localStorage.getItem("students")) || [];
+
+  if(data.length===0){
+    div.innerHTML="❌ No students yet";
+    return;
+  }
+
+  data.forEach(s=>{
     div.innerHTML+=`
     <div class="card">
     <b>${s.name}</b><br>
@@ -207,29 +210,39 @@ function loadAll(){
   });
 }
 
-// ADMIN LOGIN
-function loginAdmin(){
-  let pass=document.getElementById("adminPass").value;
+// LOGIN
+function login(){
+  let p=document.getElementById("pass").value;
 
-  if(pass==="admin123"){
+  if(p==="admin123"){
     document.getElementById("adminPanel").style.display="block";
   }else{
     alert("Wrong password");
   }
 }
 
-// ADD STUDENT
+// ADD STUDENT (FIXED)
 function addStudent(){
   let i=document.getElementById("aIndex").value;
   let n=document.getElementById("aName").value;
   let s=parseInt(document.getElementById("aScore").value);
 
+  if(!i||!n||isNaN(s)){
+    document.getElementById("msg").innerText="❌ Fill all fields";
+    return;
+  }
+
   let g=s>=80?"A":s>=70?"B":s>=60?"C":s>=50?"D":"F";
 
-  students.push({index:i,name:n,score:s,grade:g});
-  localStorage.setItem("students",JSON.stringify(students));
+  let data = JSON.parse(localStorage.getItem("students")) || [];
+
+  data.push({index:i,name:n,score:s,grade:g});
+
+  localStorage.setItem("students",JSON.stringify(data));
 
   document.getElementById("msg").innerText="✅ Added";
+
+  loadAll(); // 🔥 FIX: instant update
 }
 
 </script>
