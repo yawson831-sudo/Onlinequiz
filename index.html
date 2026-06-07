@@ -744,6 +744,331 @@ ${s.comment || "No comment"}
 };
 
   }
+  /* ==========================
+ADMIN PANEL
+========================== */
+
+if(
+window.location.hash
+===
+"#wisekayadmin"
+){
+
+document.body.innerHTML = `
+
+<style>
+body{
+font-family:Segoe UI,sans-serif;
+background:#0f172a;
+color:white;
+padding:20px;
+}
+
+.card{
+background:rgba(255,255,255,.08);
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+margin-bottom:10px;
+font-size:15px;
+}
+
+button{
+background:#198754;
+border:none;
+padding:12px;
+border-radius:10px;
+color:white;
+cursor:pointer;
+font-weight:bold;
+margin-top:10px;
+width:100%;
+}
+</style>
+
+<div class="card" id="loginBox">
+
+<h1>
+🔒 WISEKAY ADMIN
+</h1>
+
+<input
+type="password"
+id="adminPass"
+placeholder="Enter Password"
+>
+
+<button
+onclick="loginAdmin()"
+>
+Login
+</button>
+
+</div>
+
+<div
+id="adminPanel"
+style="display:none;"
+>
+
+<div class="card">
+
+<h2>
+Student Submissions
+</h2>
+
+<input
+id="searchIndex"
+placeholder="Search Index Number"
+onkeyup="loadStudents()"
+>
+
+<div
+id="studentsBox"
+></div>
+
+</div>
+
+</div>
+`;
+
+/* LOGIN */
+window.loginAdmin =
+function(){
+
+const pass =
+document
+.getElementById(
+"adminPass"
+)
+.value;
+
+if(
+pass !==
+"Wisekay2030"
+){
+alert(
+"Wrong Password ❌"
+);
+return;
+}
+
+document
+.getElementById(
+"loginBox"
+)
+.style.display =
+"none";
+
+document
+.getElementById(
+"adminPanel"
+)
+.style.display =
+"block";
+
+loadStudents();
+};
+
+/* LOAD STUDENTS */
+window.loadStudents =
+function(){
+
+const students =
+JSON.parse(
+localStorage.getItem(
+"students"
+)||"{}"
+);
+
+const search =
+document
+.getElementById(
+"searchIndex"
+)
+.value
+.toLowerCase();
+
+const box =
+document
+.getElementById(
+"studentsBox"
+);
+
+box.innerHTML="";
+
+Object.keys(students)
+.forEach(index=>{
+
+if(
+search &&
+!index
+.toLowerCase()
+.includes(search)
+){
+return;
+}
+
+const s =
+students[index];
+
+let answers = "";
+
+for(
+let i=0;
+i<10;
+i++
+){
+
+answers += `
+
+<p>
+<b>
+Q${i+1}
+</b>:
+${
+questions[i]
+.options[
+s.answers[i]
+]
+||"No Answer"
+}
+</p>
+
+<select
+id="mark_${index}_${i}"
+>
+
+<option value="0">
+0
+</option>
+
+<option value="1">
+1
+</option>
+
+</select>
+`;
+}
+
+box.innerHTML += `
+
+<div class="card">
+
+<h3>
+${s.name}
+</h3>
+
+<p>
+🏫 ${s.school}
+</p>
+
+<p>
+📞 ${s.phone}
+</p>
+
+<p>
+🆔 ${s.index}
+</p>
+
+<hr>
+
+${answers}
+
+<textarea
+id="comment_${index}"
+placeholder="Teacher comment"
+></textarea>
+
+<button
+onclick="
+saveMarks(
+'${index}'
+)
+"
+>
+Release Result
+</button>
+
+</div>
+`;
+});
+
+};
+
+/* SAVE MARKS */
+window.saveMarks =
+function(index){
+
+const students =
+JSON.parse(
+localStorage.getItem(
+"students"
+)||"{}"
+);
+
+let total = 0;
+
+for(
+let i=0;
+i<10;
+i++
+){
+
+const mark =
+Number(
+document
+.getElementById(
+`mark_${index}_${i}`
+)
+.value
+);
+
+students[index]
+[`q${i}`]
+=
+mark;
+
+total +=
+mark;
+}
+
+students[index]
+.score =
+total;
+
+students[index]
+.comment =
+document
+.getElementById(
+`comment_${index}`
+)
+.value;
+
+students[index]
+.released =
+true;
+
+localStorage.setItem(
+"students",
+JSON.stringify(
+students
+)
+);
+
+alert(
+"Result released ✅"
+);
+};
+
+  }
 /* CLOSE SCRIPT */
 </script>
 
