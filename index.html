@@ -351,13 +351,368 @@ alert(
 }
 
 /* HIDDEN ADMIN ROUTE */
-if(
-window.location.hash
-==="#wisekayadmin"
-){
-document.body.innerHTML=
-"<h1 style='text-align:center;margin-top:100px;'>🔒 Admin Panel Coming in Part 2</h1>";
+if(window.location.hash === "#wisekayadmin"){
+
+document.body.innerHTML = `
+
+<style>
+body{
+font-family:Segoe UI,sans-serif;
+background:#0f172a;
+color:white;
+padding:20px;
 }
+
+.card{
+background:rgba(255,255,255,0.08);
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+border:none;
+border-radius:8px;
+margin-bottom:10px;
+}
+
+button{
+background:#198754;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+</style>
+
+<h1>🔒 WISEKAY ADMIN PANEL</h1>
+
+<div id="loginBox" class="card">
+
+<h2>Admin Login</h2>
+
+<input
+type="password"
+id="adminPass"
+placeholder="Enter Password"
+>
+
+<button onclick="loginAdmin()">
+Login
+</button>
+
+</div>
+
+<div id="adminPanel"
+style="display:none;">
+
+<h2>Submitted Students</h2>
+
+<div id="studentsList"></div>
+
+</div>
+`;
+
+window.loginAdmin = function(){
+
+const pass =
+document
+.getElementById(
+"adminPass"
+).value;
+
+if(
+pass !==
+"Wisekay2030"
+){
+alert(
+"Wrong Password ❌"
+);
+return;
+}
+
+document
+.getElementById(
+"loginBox"
+).style.display =
+"none";
+
+document
+.getElementById(
+"adminPanel"
+).style.display =
+"block";
+
+loadStudents();
+};
+
+window.loadStudents =
+function(){
+
+const students =
+JSON.parse(
+localStorage.getItem(
+"students"
+)||"{}"
+);
+
+const container =
+document
+.getElementById(
+"studentsList"
+);
+
+container.innerHTML="";
+
+Object.keys(students)
+.forEach(index=>{
+
+const s =
+students[index];
+
+container.innerHTML += `
+
+<div class="card">
+
+<h3>
+${s.name}
+</h3>
+
+<p>
+School:
+${s.school}
+</p>
+
+<p>
+Index:
+${s.index}
+</p>
+
+<p>
+Phone:
+${s.phone}
+</p>
+
+<hr>
+
+<h4>
+Student Answers
+</h4>
+
+<p>
+<b>Q1:</b>
+${s.q1 || ""}
+</p>
+
+<p>
+<b>Q2A:</b>
+${s.q2a || ""}
+</p>
+
+<p>
+<b>Q2B:</b>
+${s.q2b || ""}
+</p>
+
+<p>
+<b>Q2C:</b>
+${s.q2c || ""}
+</p>
+
+<hr>
+
+<h4>
+Mark Student
+</h4>
+
+<label>Q1</label>
+<input
+type="number"
+min="0"
+max="1"
+id="q1_${index}"
+value="${s.q1Mark || 0}"
+>
+
+<label>Q2A</label>
+<input
+type="number"
+min="0"
+max="1"
+id="q2a_${index}"
+value="${s.q2aMark || 0}"
+>
+
+<label>Q2B</label>
+<input
+type="number"
+min="0"
+max="1"
+id="q2b_${index}"
+value="${s.q2bMark || 0}"
+>
+
+<label>Q2C</label>
+<input
+type="number"
+min="0"
+max="1"
+id="q2c_${index}"
+value="${s.q2cMark || 0}"
+>
+
+<label>
+Teacher Comment
+</label>
+
+<textarea
+id="comment_${index}"
+>${s.comment || ""}</textarea>
+
+<button
+onclick="saveMarks('${index}')"
+>
+Save Marks
+</button>
+
+<button
+onclick="sendResult('${index}')"
+>
+Send Result
+</button>
+
+</div>
+`;
+});
+};
+
+window.saveMarks =
+function(index){
+
+const students =
+JSON.parse(
+localStorage.getItem(
+"students"
+)||"{}"
+);
+
+students[index]
+.q1Mark =
+Number(
+document
+.getElementById(
+`q1_${index}`
+).value
+);
+
+students[index]
+.q2aMark =
+Number(
+document
+.getElementById(
+`q2a_${index}`
+).value
+);
+
+students[index]
+.q2bMark =
+Number(
+document
+.getElementById(
+`q2b_${index}`
+).value
+);
+
+students[index]
+.q2cMark =
+Number(
+document
+.getElementById(
+`q2c_${index}`
+).value
+);
+
+students[index]
+.comment =
+document
+.getElementById(
+`comment_${index}`
+).value;
+
+students[index]
+.score =
+
+students[index]
+.q1Mark +
+
+students[index]
+.q2aMark +
+
+students[index]
+.q2bMark +
+
+students[index]
+.q2cMark;
+
+localStorage.setItem(
+"students",
+JSON.stringify(
+students
+)
+);
+
+alert(
+"Marks saved ✅"
+);
+};
+
+window.sendResult =
+function(index){
+
+const students =
+JSON.parse(
+localStorage.getItem(
+"students"
+)||"{}"
+);
+
+const s =
+students[index];
+
+const msg =
+`📘 SHS RESULT
+
+👤 ${s.name}
+🆔 ${s.index}
+
+Q1:
+${s.q1Mark}/1
+
+Q2A:
+${s.q2aMark}/1
+
+Q2B:
+${s.q2bMark}/1
+
+Q2C:
+${s.q2cMark}/1
+
+✅ Total:
+${s.score}/4
+
+💬 Teacher Comment:
+${s.comment}`;
+
+window.open(
+`https://wa.me/233${s.phone.slice(1)}?text=${encodeURIComponent(msg)}`,
+"_blank"
+);
+};
+  }
 
 </script>
 
