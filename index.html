@@ -238,9 +238,172 @@ updateClock();
 
 /* Start Exam */
 function startExam(){
-  alert("Part 2 will begin the exam 😏");
+
+document.querySelector(".container").innerHTML = `
+
+<div class="card">
+
+<div style="display:flex;justify-content:space-between;">
+<h3>Question <span id="qNo">1</span>/30</h3>
+<h3>⏱️ <span id="countdown">30:00</span></h3>
+</div>
+
+<div style="margin-top:20px;">
+<h2 id="questionText"></h2>
+</div>
+
+<div id="options" style="margin-top:20px;"></div>
+
+<div style="display:flex;gap:10px;margin-top:20px;">
+<button onclick="prevQuestion()">⬅️ Previous</button>
+<button onclick="nextQuestion()">Next ➡️</button>
+</div>
+
+</div>
+`;
+
+loadQuestion();
+startTimer();
+  }
+  const questions = [
+
+{
+question:"1. Simplify: 2x + 3x",
+options:["2x","5x","6x","x"],
+answer:"5x"
+},
+
+{
+question:"2. What is 25% of 200?",
+options:["50","25","75","100"],
+answer:"50"
+},
+
+{
+question:"3. Solve: x + 5 = 12",
+options:["5","6","7","8"],
+answer:"7"
+},
+
+{
+question:"4. Evaluate: 2³",
+options:["6","8","9","12"],
+answer:"8"
+},
+
+{
+question:"5. Which of these is a set?",
+options:["Beautiful girls","Tall boys","{1,2,3}","Happy students"],
+answer:"{1,2,3}"
+},
+
+{
+question:"6. Simplify: 10 ÷ 2",
+options:["2","3","5","10"],
+answer:"5"
+},
+
+{
+question:"7. Express 0.5 as a percentage",
+options:["5%","10%","50%","100%"],
+answer:"50%"
+},
+
+{
+question:"8. Solve: 3x = 12",
+options:["2","3","4","5"],
+answer:"4"
+},
+
+{
+question:"9. Simplify: 4²",
+options:["8","12","16","20"],
+answer:"16"
+},
+
+{
+question:"10. Find the ratio of 4 to 8",
+options:["1:2","2:1","4:1","8:4"],
+answer:"1:2"
 }
 
+];
+
+let currentQuestion = 0;
+let answers = {};
+let timeLeft = 1800;
+function loadQuestion(){
+
+let q = questions[currentQuestion];
+
+document.getElementById("qNo").innerText =
+currentQuestion + 1;
+
+document.getElementById("questionText")
+.innerText = q.question;
+
+let optionHTML = "";
+
+q.options.forEach(opt => {
+
+optionHTML += `
+<button
+style="margin-top:10px;background:#f1f5f9;color:black;"
+onclick="selectAnswer('${opt}')">
+${opt}
+</button>
+`;
+
+});
+
+document.getElementById("options")
+.innerHTML = optionHTML;
+}
+
+function selectAnswer(answer){
+answers[currentQuestion] = answer;
+}
+
+function nextQuestion(){
+
+if(currentQuestion < questions.length - 1){
+currentQuestion++;
+loadQuestion();
+}else{
+alert("More questions coming in Part 3 😏");
+}
+}
+
+function prevQuestion(){
+
+if(currentQuestion > 0){
+currentQuestion--;
+loadQuestion();
+}
+}
+
+function startTimer(){
+
+const timer = setInterval(()=>{
+
+timeLeft--;
+
+let mins = Math.floor(timeLeft / 60);
+let secs = timeLeft % 60;
+
+secs = secs < 10 ? "0"+secs : secs;
+
+document.getElementById("countdown")
+.innerText = `${mins}:${secs}`;
+
+if(timeLeft <= 0){
+clearInterval(timer);
+alert("Time Up!");
+}
+
+},1000);
+
+   }
 </script>
 
 </body>
