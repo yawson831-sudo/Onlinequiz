@@ -2,77 +2,85 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>School Results System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School App</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#0f172a;
+  background:#0b1220;
   color:white;
 }
 
-/* HEADER */
+/* TOP BAR */
 header{
   background:#1e293b;
   padding:15px;
   text-align:center;
-  font-size:20px;
+  font-weight:bold;
 }
 
-/* LAYOUT */
-.container{
+/* NAV BAR */
+nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
   display:flex;
-  justify-content:center;
-  gap:20px;
-  padding:20px;
-  flex-wrap:wrap;
+  background:#1e293b;
 }
 
-/* BOXES */
-.box{
-  background:#1e293b;
+nav button{
+  flex:1;
+  padding:12px;
+  border:none;
+  background:none;
+  color:white;
+  font-size:14px;
+}
+
+/* PAGES */
+.page{
+  display:none;
   padding:20px;
-  border-radius:12px;
-  width:320px;
+  padding-bottom:80px;
+}
+
+.active{
+  display:block;
+}
+
+/* CARD */
+.card{
+  background:#111827;
+  padding:15px;
+  border-radius:10px;
+  margin-top:10px;
 }
 
 /* INPUT */
 input{
-  width:90%;
-  padding:10px;
-  margin:8px 0;
+  width:100%;
+  padding:12px;
+  margin-top:10px;
   border:none;
   border-radius:6px;
 }
 
 /* BUTTON */
-button{
+button.action{
   width:100%;
-  padding:10px;
+  padding:12px;
+  margin-top:10px;
   background:#22c55e;
   border:none;
   color:white;
   border-radius:6px;
-  cursor:pointer;
-}
-button:hover{background:#16a34a}
-
-/* RESULT */
-.result{
-  margin-top:10px;
-  background:#0b1220;
-  padding:10px;
-  border-radius:8px;
-  display:none;
 }
 
-/* ADMIN TOGGLE */
-#adminPanel{
-  display:none;
-}
-
-.toggle{
+/* ADMIN */
+#adminPage{display:none}
+.smallBtn{
   background:#38bdf8;
 }
 </style>
@@ -80,110 +88,148 @@ button:hover{background:#16a34a}
 
 <body>
 
-<header>
-📊 School Results System
-<button class="toggle" onclick="toggleAdmin()">Admin</button>
-</header>
+<header>📱 School Mobile App</header>
 
-<div class="container">
+<!-- HOME PAGE -->
+<div id="home" class="page active">
 
-<!-- STUDENT PANEL -->
-<div class="box">
-<h3>🎓 Student Portal</h3>
+<h3>🎓 Check Result</h3>
 
-<input type="text" id="indexInput" placeholder="Enter Index Number">
-<button onclick="checkResult()">Check Result</button>
+<input id="indexInput" placeholder="Enter Index Number">
+<button class="action" onclick="checkResult()">Search</button>
 
-<div class="result" id="resultBox">
+<div class="card" id="resultCard" style="display:none">
 <p id="resultText"></p>
 </div>
-</div>
-
-<!-- ADMIN PANEL -->
-<div class="box" id="adminPanel">
-<h3>🧑‍🏫 Admin Panel</h3>
-
-<input type="text" id="aIndex" placeholder="Index Number">
-<input type="text" id="aName" placeholder="Name">
-<input type="number" id="aScore" placeholder="Score">
-
-<button onclick="addStudent()">Add Student</button>
-
-<p id="adminMsg"></p>
-</div>
 
 </div>
+
+<!-- RESULTS PAGE -->
+<div id="results" class="page">
+
+<h3>📊 All Results</h3>
+<div id="allResults"></div>
+
+</div>
+
+<!-- ADMIN PAGE -->
+<div id="admin" class="page">
+
+<h3>🧑‍🏫 Admin Login</h3>
+
+<input type="password" id="adminPass" placeholder="Enter Password">
+<button class="action" onclick="loginAdmin()">Login</button>
+
+<div id="adminPanel" style="display:none">
+
+<h4>Add Student</h4>
+
+<input id="aIndex" placeholder="Index">
+<input id="aName" placeholder="Name">
+<input id="aScore" placeholder="Score">
+
+<button class="action" onclick="addStudent()">Add</button>
+
+<p id="msg"></p>
+
+</div>
+
+</div>
+
+<!-- NAV -->
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('results')">Results</button>
+<button onclick="showPage('admin')">Admin</button>
+</nav>
 
 <script>
 
 let students = JSON.parse(localStorage.getItem("students")) || [
-  {index:"S001", name:"Kojo Mensah", score:85, grade:"A"},
-  {index:"S002", name:"Ama Serwaa", score:70, grade:"B"}
+  {index:"S001",name:"Kojo Mensah",score:85,grade:"A"},
+  {index:"S002",name:"Ama Serwaa",score:70,grade:"B"}
 ];
 
-// 🎓 CHECK RESULT
+// PAGE SWITCH
+function showPage(page){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
+
+  if(page==="results") loadAll();
+}
+
+// CHECK RESULT
 function checkResult(){
   let index = document.getElementById("indexInput").value;
-  let found = students.find(s => s.index === index);
+  let found = students.find(s=>s.index===index);
 
-  let box = document.getElementById("resultBox");
+  let card = document.getElementById("resultCard");
   let text = document.getElementById("resultText");
 
   if(!found){
-    text.innerHTML = "❌ Not found";
-    box.style.display="block";
+    text.innerHTML="❌ Not Found";
+    card.style.display="block";
     return;
   }
 
-  text.innerHTML = `
-  <b>Name:</b> ${found.name}<br>
-  <b>Index:</b> ${found.index}<br>
-  <b>Score:</b> ${found.score}<br>
-  <b>Grade:</b> ${found.grade}
+  text.innerHTML=`
+  <b>${found.name}</b><br>
+  Index: ${found.index}<br>
+  Score: ${found.score}<br>
+  Grade: ${found.grade}
   `;
 
-  box.style.display="block";
+  card.style.display="block";
 
   sendWhatsApp(found);
 }
 
-// 📲 WHATSAPP
-function sendWhatsApp(student){
-  const phone = "233208333632";
+// WHATSAPP
+function sendWhatsApp(s){
+  let phone="233208333632";
 
-  const msg =
-  `Result Ready:%0AName: ${student.name}%0AScore: ${student.score}%0AGrade: ${student.grade}`;
+  let msg=`Result Ready:%0A${s.name}%0A${s.score}%0A${s.grade}`;
 
-  window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+  window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
 }
 
-// 🧑‍🏫 ADD STUDENT
-function addStudent(){
-  let index = document.getElementById("aIndex").value;
-  let name = document.getElementById("aName").value;
-  let score = parseInt(document.getElementById("aScore").value);
-  let msg = document.getElementById("adminMsg");
+// LOAD ALL RESULTS
+function loadAll(){
+  let div=document.getElementById("allResults");
+  div.innerHTML="";
 
-  if(!index || !name || isNaN(score)){
-    msg.innerText="❌ Fill all fields";
-    return;
+  students.forEach(s=>{
+    div.innerHTML+=`
+    <div class="card">
+    <b>${s.name}</b><br>
+    ${s.index} | ${s.score} | ${s.grade}
+    </div>`;
+  });
+}
+
+// ADMIN LOGIN
+function loginAdmin(){
+  let pass=document.getElementById("adminPass").value;
+
+  if(pass==="admin123"){
+    document.getElementById("adminPanel").style.display="block";
+  }else{
+    alert("Wrong password");
   }
-
-  let grade = score>=80?"A":
-              score>=70?"B":
-              score>=60?"C":
-              score>=50?"D":"F";
-
-  students.push({index,name,score,grade});
-  localStorage.setItem("students", JSON.stringify(students));
-
-  msg.innerText="✅ Student Added";
 }
 
-// 🔐 TOGGLE ADMIN
-function toggleAdmin(){
-  let panel = document.getElementById("adminPanel");
-  panel.style.display = panel.style.display === "none" ? "block" : "none";
+// ADD STUDENT
+function addStudent(){
+  let i=document.getElementById("aIndex").value;
+  let n=document.getElementById("aName").value;
+  let s=parseInt(document.getElementById("aScore").value);
+
+  let g=s>=80?"A":s>=70?"B":s>=60?"C":s>=50?"D":"F";
+
+  students.push({index:i,name:n,score:s,grade:g});
+  localStorage.setItem("students",JSON.stringify(students));
+
+  document.getElementById("msg").innerText="✅ Added";
 }
 
 </script>
