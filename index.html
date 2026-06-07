@@ -3,246 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>School Results App</title>
+
+<title>Julio Maths CBT</title>
 
 <style>
-body{
+*{
   margin:0;
-  font-family:Arial;
-  background:#0b1220;
-  color:white;
+  padding:0;
+  box-sizing:border-box;
 }
 
-header{
-  background:#1e293b;
-  padding:15px;
-  text-align:center;
-  font-weight:bold;
+body{
+  font-family:Arial, sans-serif;
+  background:#f5f5f5;
+  overflow:hidden;
 }
 
-nav{
+/* Loading Screen */
+#loader{
   position:fixed;
-  bottom:0;
   width:100%;
+  height:100vh;
+  background:#ffffff;
   display:flex;
-  background:#1e293b;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  animation:fadeOut 1s ease forwards;
+  animation-delay:3s;
 }
 
-nav button{
-  flex:1;
-  padding:12px;
-  border:none;
-  background:none;
-  color:white;
+.loader-circle{
+  width:60px;
+  height:60px;
+  border:6px solid #ddd;
+  border-top:6px solid #0b57d0;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
 }
 
-.page{
+.loader-text{
+  margin-top:20px;
+  font-size:22px;
+  font-weight:bold;
+  color:#0b57d0;
+}
+
+@keyframes spin{
+  100%{
+    transform:rotate(360deg);
+  }
+}
+
+@keyframes fadeOut{
+  to{
+    opacity:0;
+    visibility:hidden;
+  }
+}
+
+/* Main App */
+#app{
   display:none;
+  animation:slideUp .7s ease;
+}
+
+@keyframes slideUp{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* Header */
+header{
+  background:#0b57d0;
+  color:white;
+  text-align:center;
+  padding:18px;
+  font-size:22px;
+  font-weight:bold;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+
+/* Container */
+.container{
   padding:20px;
-  padding-bottom:80px;
 }
 
-.active{
-  display:block;
-}
-
+/* Card */
 .card{
-  background:#111827;
+  background:white;
+  border-radius:14px;
+  padding:20px;
+  margin-top:20px;
+  box-shadow:0 2px 12px rgba(0,0,0,.1);
+}
+
+/* Info */
+.info{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
+
+.info-box{
+  background:#f1f5f9;
   padding:12px;
   border-radius:10px;
-  margin-top:10px;
+  width:48%;
+  text-align:center;
 }
 
-input{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:6px;
+.label{
+  font-size:13px;
+  color:gray;
 }
 
-button.action{
+.value{
+  font-size:18px;
+  font-weight:bold;
+  margin-top:4px;
+}
+
+/* Start Button */
+button{
   width:100%;
-  padding:12px;
-  margin-top:10px;
-  background:#22c55e;
+  margin-top:20px;
+  padding:15px;
   border:none;
+  border-radius:10px;
+  background:#0b57d0;
   color:white;
-  border-radius:6px;
+  font-size:18px;
+  cursor:pointer;
+  transition:.3s;
 }
 
-.resultBox{
-  background:#111827;
-  padding:10px;
-  margin-top:10px;
-  border-radius:8px;
-  display:none;
+button:hover{
+  transform:scale(1.02);
+}
+
+.instructions{
+  margin-top:15px;
+  color:#555;
+  line-height:1.7;
 }
 </style>
 </head>
-
 <body>
 
-<header>📱 School Results System</header>
+<!-- LOADING -->
+<div id="loader">
+  <div class="loader-circle"></div>
+  <div class="loader-text">
+    Julio Maths CBT
+  </div>
+</div>
 
-<!-- HOME -->
-<div id="home" class="page active">
+<!-- APP -->
+<div id="app">
 
-<h3>🎓 Check Result</h3>
+<header>
+📚 Julio Maths CBT
+</header>
 
-<input id="indexInput" placeholder="Enter Index Number">
-<button class="action" onclick="checkResult()">Search</button>
+<div class="container">
 
-<div class="resultBox" id="resultBox">
-<p id="resultText"></p>
+<div class="card">
+<h2>SHS 1 Mathematics — Section A</h2>
+
+<div class="info">
+
+<div class="info-box">
+<div class="label">Real Time</div>
+<div class="value" id="clock">--:--</div>
+</div>
+
+<div class="info-box">
+<div class="label">Exam Time</div>
+<div class="value" id="timer">
+30:00
+</div>
 </div>
 
 </div>
 
-<!-- RESULTS -->
-<div id="results" class="page">
-
-<h3>📊 All Results</h3>
-<div id="allResults"></div>
-
+<div class="instructions">
+<b>Instructions:</b><br>
+• Answer all 30 questions.<br>
+• Choose only one answer.<br>
+• Time allowed: 30 minutes.<br>
+• Your score will show at the end.
 </div>
 
-<!-- ADMIN -->
-<div id="admin" class="page">
-
-<h3>🧑‍🏫 Admin Login</h3>
-
-<input type="password" id="pass" placeholder="Enter Password">
-<button class="action" onclick="login()">Login</button>
-
-<div id="adminPanel" style="display:none">
-
-<h4>Add Student</h4>
-
-<input id="aIndex" placeholder="Index">
-<input id="aName" placeholder="Name">
-<input id="aScore" placeholder="Score">
-
-<button class="action" onclick="addStudent()">Add Student</button>
-
-<p id="msg"></p>
+<button onclick="startExam()">
+🚀 Start Exam
+</button>
 
 </div>
 
 </div>
 
-<!-- NAV -->
-<nav>
-<button onclick="show('home')">Home</button>
-<button onclick="show('results'); loadAll()">Results</button>
-<button onclick="show('admin')">Admin</button>
-</nav>
+</div>
 
 <script>
 
-let students = JSON.parse(localStorage.getItem("students")) || [
-  {index:"S001",name:"Kojo Mensah",score:85,grade:"A"},
-  {index:"S002",name:"Ama Serwaa",score:70,grade:"B"}
-];
+/* Show App After Loading */
+setTimeout(()=>{
+  document.getElementById("app").style.display="block";
+  document.body.style.overflow="auto";
+},3000);
 
-// PAGE SWITCH
-function show(page){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(page).classList.add("active");
+/* Real Time Clock */
+function updateClock(){
+  const now = new Date();
+
+  let hours = now.getHours();
+  let mins = now.getMinutes();
+
+  mins = mins < 10 ? "0"+mins : mins;
+
+  document.getElementById("clock")
+  .innerText = hours + ":" + mins;
 }
 
-// CHECK RESULT
-function checkResult(){
-  let index = document.getElementById("indexInput").value;
+setInterval(updateClock,1000);
+updateClock();
 
-  let data = JSON.parse(localStorage.getItem("students")) || students;
-
-  let found = data.find(s=>s.index===index);
-
-  let box = document.getElementById("resultBox");
-  let text = document.getElementById("resultText");
-
-  if(!found){
-    text.innerHTML="❌ Not Found";
-    box.style.display="block";
-    return;
-  }
-
-  text.innerHTML=`
-  <b>${found.name}</b><br>
-  ${found.index}<br>
-  Score: ${found.score}<br>
-  Grade: ${found.grade}
-  `;
-
-  box.style.display="block";
-
-  sendWhatsApp(found);
-}
-
-// WHATSAPP
-function sendWhatsApp(s){
-  let phone="233208333632";
-
-  let msg=`Result:%0A${s.name}%0A${s.score}%0A${s.grade}`;
-
-  window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
-}
-
-// LOAD ALL (FIXED)
-function loadAll(){
-  let div=document.getElementById("allResults");
-  div.innerHTML="";
-
-  let data = JSON.parse(localStorage.getItem("students")) || [];
-
-  if(data.length===0){
-    div.innerHTML="❌ No students yet";
-    return;
-  }
-
-  data.forEach(s=>{
-    div.innerHTML+=`
-    <div class="card">
-    <b>${s.name}</b><br>
-    ${s.index} | ${s.score} | ${s.grade}
-    </div>`;
-  });
-}
-
-// LOGIN
-function login(){
-  let p=document.getElementById("pass").value;
-
-  if(p==="admin123"){
-    document.getElementById("adminPanel").style.display="block";
-  }else{
-    alert("Wrong password");
-  }
-}
-
-// ADD STUDENT (FIXED)
-function addStudent(){
-  let i=document.getElementById("aIndex").value;
-  let n=document.getElementById("aName").value;
-  let s=parseInt(document.getElementById("aScore").value);
-
-  if(!i||!n||isNaN(s)){
-    document.getElementById("msg").innerText="❌ Fill all fields";
-    return;
-  }
-
-  let g=s>=80?"A":s>=70?"B":s>=60?"C":s>=50?"D":"F";
-
-  let data = JSON.parse(localStorage.getItem("students")) || [];
-
-  data.push({index:i,name:n,score:s,grade:g});
-
-  localStorage.setItem("students",JSON.stringify(data));
-
-  document.getElementById("msg").innerText="✅ Added";
-
-  loadAll(); // 🔥 FIX: instant update
+/* Start Exam */
+function startExam(){
+  alert("Part 2 will begin the exam 😏");
 }
 
 </script>
