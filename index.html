@@ -182,13 +182,12 @@ Next
 
 <script>
 
-/* LOADER */
-window.addEventListener(
-"load",()=>{
+/* FAST LOADER */
+setTimeout(()=>{
 document.getElementById(
 "loader"
 ).style.display="none";
-});
+},800);
 
 /* BLOCK BACK BUTTON */
 history.pushState(
