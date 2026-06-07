@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SHS Ghana Curriculum</title>
+
+<style>
+body{
+  margin:0;
+  font-family:"Segoe UI",sans-serif;
+  background:url('images/Screenshot_20260522-114440.jpg')
+  center/cover no-repeat fixed;
+  color:white;
+}
+
+#loader{
+  position:fixed;
+  width:100%;
+  height:100vh;
+  background:#0f172a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+header{
+  background:linear-gradient(90deg,#0b5ed7,#198754);
+  padding:15px;
+  text-align:center;
+}
+
+.page{
+  display:none;
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+
+.page.active{
+  display:block;
+}
+
+.card{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:15px;
+  margin-bottom:20px;
+}
+
+input,textarea{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  margin-bottom:15px;
+  font-size:15px;
+}
+
+button{
+  background:linear-gradient(
+  45deg,#0b5ed7,#198754
+  );
+  border:none;
+  color:white;
+  padding:12px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{
+  opacity:0.9;
+}
+
+.footer{
+  text-align:center;
+  padding:20px;
+  color:#ddd;
+}
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+  <h1>Loading SHS Portal...</h1>
+</div>
+
+<header>
+  <h1>SHS Ghana Curriculum</h1>
+  <p>Social Studies Assignment</p>
+</header>
+
+<!-- HOME -->
+<div class="page active" id="home">
+
+  <div class="card">
+
+    <h2>Welcome 👋</h2>
+
+    <p>
+      Complete your Social Studies
+      assignment carefully.
+    </p>
+
+    <button onclick="go('details')">
+      Start Assignment
+    </button>
+
+  </div>
+
+</div>
+
+<!-- STUDENT DETAILS -->
+<div class="page" id="details">
+
+  <div class="card">
+
+    <h2>Student Details</h2>
+
+    <label>Full Name</label>
+    <input id="name">
+
+    <label>School Name</label>
+    <input id="school">
+
+    <label>Phone Number</label>
+    <input
+      id="phone"
+      placeholder="0241234567"
+    >
+
+    <label>Index Number</label>
+    <input
+      id="index"
+      placeholder="Enter your index number"
+    >
+
+    <button onclick="saveDetails()">
+      Continue
+    </button>
+
+  </div>
+
+</div>
+
+<!-- QUESTIONS -->
+<div class="page" id="questions">
+
+  <div class="card">
+
+    <h2>PART A</h2>
+
+    <label>
+      1. Explain indigenous technology
+    </label>
+
+    <textarea id="q1"></textarea>
+
+    <label>
+      2A. Metalworking
+    </label>
+
+    <textarea id="q2a"></textarea>
+
+    <label>
+      2B. Irrigation System
+    </label>
+
+    <textarea id="q2b"></textarea>
+
+    <label>
+      2C. Pottery
+    </label>
+
+    <textarea id="q2c"></textarea>
+
+    <button onclick="submitAssignment()">
+      Submit Assignment
+    </button>
+
+  </div>
+
+</div>
+
+<div class="footer">
+© SHS Ghana Curriculum
+</div>
+
+<script>
+
+/* LOADER */
+window.addEventListener(
+"load",()=>{
+document.getElementById(
+"loader"
+).style.display="none";
+});
+
+/* NAVIGATION */
+function go(page){
+
+document
+.querySelectorAll(".page")
+.forEach(p=>
+p.classList.remove("active")
+);
+
+document
+.getElementById(page)
+.classList.add("active");
+}
+
+/* SAVE DETAILS */
+function saveDetails(){
+
+const name=
+document
+.getElementById("name")
+.value.trim();
+
+const school=
+document
+.getElementById("school")
+.value.trim();
+
+const phone=
+document
+.getElementById("phone")
+.value.trim();
+
+const index=
+document
+.getElementById("index")
+.value.trim();
+
+if(
+!name ||
+!school ||
+!phone ||
+!index
+){
+alert(
+"Please fill all fields"
+);
+return;
+}
+
+const students=
+JSON.parse(
+localStorage.getItem(
+"students"
+)||"{}"
+);
+
+students[index]={
+name,
+school,
+phone,
+index
+};
+
+localStorage.setItem(
+"students",
+JSON.stringify(students)
+);
+
+localStorage.setItem(
+"currentIndex",
+index
+);
+
+go("questions");
+}
+
+/* SUBMIT */
+function submitAssignment(){
+
+const index=
+localStorage.getItem(
+"currentIndex"
+);
+
+const students=
+JSON.parse(
+localStorage.getItem(
+"students"
+)||"{}"
+);
+
+students[index].q1=
+document
+.getElementById("q1")
+.value;
+
+students[index].q2a=
+document
+.getElementById("q2a")
+.value;
+
+students[index].q2b=
+document
+.getElementById("q2b")
+.value;
+
+students[index].q2c=
+document
+.getElementById("q2c")
+.value;
+
+localStorage.setItem(
+"students",
+JSON.stringify(students)
+);
+
+const s=
+students[index];
+
+const message=
+`📘 SHS Assignment
+
+👤 Name: ${s.name}
+🏫 School: ${s.school}
+📞 Phone: ${s.phone}
+🆔 Index: ${s.index}
+
+Q1:
+${s.q1}
+
+Q2A:
+${s.q2a}
+
+Q2B:
+${s.q2b}
+
+Q2C:
+${s.q2c}`;
+
+window.open(
+`https://wa.me/233208333632?text=${encodeURIComponent(message)}`,
+"_blank"
+);
+
+alert(
+"Assignment submitted successfully ✅"
+);
+}
+
+/* HIDDEN ADMIN ROUTE */
+if(
+window.location.hash
+==="#wisekayadmin"
+){
+document.body.innerHTML=
+"<h1 style='text-align:center;margin-top:100px;'>🔒 Admin Panel Coming in Part 2</h1>";
+}
+
+</script>
+
+</body>
+    </html>
