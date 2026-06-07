@@ -465,3 +465,129 @@ el.classList.add(
 "selected"
 );
 }
+/* NEXT QUESTION */
+function nextQuestion(){
+
+if(selectedAnswer===null){
+alert(
+"Please select an answer first"
+);
+return;
+}
+
+const index =
+localStorage.getItem(
+"currentIndex"
+);
+
+const students =
+JSON.parse(
+localStorage.getItem(
+"students"
+)||"{}"
+);
+
+/* SAVE ANSWER */
+students[index]
+.answers[currentQuestion]
+=
+selectedAnswer;
+
+localStorage.setItem(
+"students",
+JSON.stringify(
+students
+)
+);
+
+/* MOVE TO NEXT */
+currentQuestion++;
+
+if(
+currentQuestion <
+questions.length
+){
+loadQuestion();
+return;
+}
+
+/* SUBMIT */
+submitAssignment();
+}
+
+/* SUBMIT */
+function submitAssignment(){
+
+const index =
+localStorage.getItem(
+"currentIndex"
+);
+
+const students =
+JSON.parse(
+localStorage.getItem(
+"students"
+)||"{}"
+);
+
+const s =
+students[index];
+
+let answersText="";
+
+s.answers.forEach(
+(ans,i)=>{
+
+answersText +=
+
+`Q${i+1}: ${
+questions[i]
+.options[ans]
+}
+
+`;
+});
+
+/* SEND TO YOUR WHATSAPP */
+const msg =
+
+`📘 SHS ASSIGNMENT
+
+👤 Name:
+${s.name}
+
+🏫 School:
+${s.school}
+
+📞 Phone:
+${s.phone}
+
+🆔 Index:
+${s.index}
+
+----------------
+
+${answersText}
+
+✅ Submitted Successfully`;
+
+window.open(
+`https://wa.me/233208333632?text=${
+encodeURIComponent(msg)
+}`,
+"_blank"
+);
+
+alert(
+"Assignment Submitted ✅"
+);
+
+/* RESET */
+go("home");
+}
+
+/* CLOSE SCRIPT */
+</script>
+
+</body>
+</html>
