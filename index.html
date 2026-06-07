@@ -2,84 +2,96 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>SHS Ghana Curriculum</title>
 
 <style>
 body{
-  margin:0;
-  font-family:"Segoe UI",sans-serif;
-  background:url('images/Screenshot_20260522-114440.jpg')
-  center/cover no-repeat fixed;
-  color:white;
+margin:0;
+font-family:"Segoe UI",sans-serif;
+background:url('images/Screenshot_20260522-114440.jpg')
+center/cover fixed;
+color:white;
 }
 
 #loader{
-  position:fixed;
-  width:100%;
-  height:100vh;
-  background:#0f172a;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+position:fixed;
+width:100%;
+height:100vh;
+background:#0f172a;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
 }
 
 header{
-  background:linear-gradient(90deg,#0b5ed7,#198754);
-  padding:15px;
-  text-align:center;
-}
-
-.page{
-  display:none;
-  padding:20px;
-  max-width:900px;
-  margin:auto;
-}
-
-.page.active{
-  display:block;
+background:linear-gradient(
+90deg,#0b5ed7,#198754
+);
+padding:15px;
+text-align:center;
+box-shadow:0 2px 15px rgba(0,0,0,.3);
 }
 
 .card{
-  background:rgba(255,255,255,0.1);
-  backdrop-filter:blur(10px);
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:20px;
+background:rgba(255,255,255,.1);
+backdrop-filter:blur(10px);
+padding:20px;
+border-radius:15px;
+max-width:700px;
+margin:20px auto;
 }
 
-input,textarea{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  margin-bottom:15px;
-  font-size:15px;
+.page{
+display:none;
+padding:20px;
+}
+
+.page.active{
+display:block;
+}
+
+input{
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+margin-bottom:15px;
+font-size:16px;
 }
 
 button{
-  background:linear-gradient(
-  45deg,#0b5ed7,#198754
-  );
-  border:none;
-  color:white;
-  padding:12px 20px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
+background:linear-gradient(
+45deg,#0b5ed7,#198754
+);
+border:none;
+padding:12px 20px;
+border-radius:10px;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
 }
 
-button:hover{
-  opacity:0.9;
+.option{
+background:rgba(255,255,255,.1);
+padding:15px;
+border-radius:10px;
+margin-bottom:10px;
+cursor:pointer;
+border:2px solid transparent;
 }
 
-.footer{
-  text-align:center;
-  padding:20px;
-  color:#ddd;
+.option:hover{
+border:2px solid #4ade80;
+}
+
+.selected{
+border:2px solid #4ade80;
+background:rgba(74,222,128,.2);
 }
 </style>
 </head>
@@ -87,108 +99,85 @@ button:hover{
 <body>
 
 <div id="loader">
-  <h1>Loading SHS Portal...</h1>
+<h1>Loading SHS Portal...</h1>
 </div>
 
 <header>
-  <h1>SHS Ghana Curriculum</h1>
-  <p>Social Studies Assignment</p>
+<h1>SHS Ghana Curriculum</h1>
+<p>Social Studies Assignment</p>
 </header>
 
 <!-- HOME -->
 <div class="page active" id="home">
 
-  <div class="card">
+<div class="card">
 
-    <h2>Welcome 👋</h2>
+<h2>Welcome 👋</h2>
 
-    <p>
-      Complete your Social Studies
-      assignment carefully.
-    </p>
+<p>
+Complete all questions carefully.
+You cannot skip or go back.
+</p>
 
-    <button onclick="go('details')">
-      Start Assignment
-    </button>
-
-  </div>
+<button onclick="go('details')">
+Start Assignment
+</button>
 
 </div>
+</div>
 
-<!-- STUDENT DETAILS -->
+<!-- DETAILS -->
 <div class="page" id="details">
 
-  <div class="card">
+<div class="card">
 
-    <h2>Student Details</h2>
+<h2>Student Details</h2>
 
-    <label>Full Name</label>
-    <input id="name">
+<input
+id="name"
+placeholder="Full Name"
+>
 
-    <label>School Name</label>
-    <input id="school">
+<input
+id="school"
+placeholder="School Name"
+>
 
-    <label>Phone Number</label>
-    <input
-      id="phone"
-      placeholder="0241234567"
-    >
+<input
+id="phone"
+placeholder="Phone Number"
+>
 
-    <label>Index Number</label>
-    <input
-      id="index"
-      placeholder="Enter your index number"
-    >
+<input
+id="index"
+placeholder="Index Number"
+>
 
-    <button onclick="saveDetails()">
-      Continue
-    </button>
-
-  </div>
-
-</div>
-
-<!-- QUESTIONS -->
-<div class="page" id="questions">
-
-  <div class="card">
-
-    <h2>PART A</h2>
-
-    <label>
-      1. Explain indigenous technology
-    </label>
-
-    <textarea id="q1"></textarea>
-
-    <label>
-      2A. Metalworking
-    </label>
-
-    <textarea id="q2a"></textarea>
-
-    <label>
-      2B. Irrigation System
-    </label>
-
-    <textarea id="q2b"></textarea>
-
-    <label>
-      2C. Pottery
-    </label>
-
-    <textarea id="q2c"></textarea>
-
-    <button onclick="submitAssignment()">
-      Submit Assignment
-    </button>
-
-  </div>
+<button onclick="saveDetails()">
+Continue
+</button>
 
 </div>
+</div>
 
-<div class="footer">
-© SHS Ghana Curriculum
+<!-- QUIZ -->
+<div class="page" id="quiz">
+
+<div class="card">
+
+<h2 id="questionNumber">
+Question 1/10
+</h2>
+
+<h3 id="questionText"></h3>
+
+<div id="optionsBox"></div>
+
+<button onclick="nextQuestion()">
+Next
+</button>
+
+</div>
 </div>
 
 <script>
@@ -200,6 +189,135 @@ document.getElementById(
 "loader"
 ).style.display="none";
 });
+
+/* BLOCK BACK BUTTON */
+history.pushState(
+null,null,
+location.href
+);
+
+window.onpopstate=
+function(){
+history.go(1);
+};
+
+/* QUESTIONS */
+const questions=[
+
+{
+q:"What is citizenship?",
+options:[
+"Being a member of a country",
+"Playing football",
+"Going to school",
+"Sleeping"
+],
+answer:0
+},
+
+{
+q:"Which is a moral value?",
+options:[
+"Stealing",
+"Honesty",
+"Fighting",
+"Insulting"
+],
+answer:1
+},
+
+{
+q:"Who is a citizen?",
+options:[
+"A visitor",
+"A member of a country",
+"A tourist",
+"A stranger"
+],
+answer:1
+},
+
+{
+q:"Which is a responsibility of a citizen?",
+options:[
+"Destroy property",
+"Voting",
+"Fighting",
+"Stealing"
+],
+answer:1
+},
+
+{
+q:"What promotes peace?",
+options:[
+"Violence",
+"Unity",
+"Fighting",
+"Hatred"
+],
+answer:1
+},
+
+{
+q:"Which is a national symbol?",
+options:[
+"Football",
+"Flag",
+"Shoe",
+"Book"
+],
+answer:1
+},
+
+{
+q:"What helps development?",
+options:[
+"Education",
+"Violence",
+"Stealing",
+"Laziness"
+],
+answer:0
+},
+
+{
+q:"What is good behaviour?",
+options:[
+"Respect",
+"Insult",
+"Fighting",
+"Lying"
+],
+answer:0
+},
+
+{
+q:"Who leads a community?",
+options:[
+"Chief",
+"Driver",
+"Tailor",
+"Farmer"
+],
+answer:0
+},
+
+{
+q:"What should citizens obey?",
+options:[
+"Laws",
+"Rumours",
+"Violence",
+"Confusion"
+],
+answer:0
+}
+
+];
+
+let currentQuestion=0;
+let selectedAnswer=null;
 
 /* NAVIGATION */
 function go(page){
@@ -239,9 +357,9 @@ document
 .value.trim();
 
 if(
-!name ||
-!school ||
-!phone ||
+!name||
+!school||
+!phone||
 !index
 ){
 alert(
@@ -261,7 +379,8 @@ students[index]={
 name,
 school,
 phone,
-index
+index,
+answers:[]
 };
 
 localStorage.setItem(
@@ -274,447 +393,76 @@ localStorage.setItem(
 index
 );
 
-go("questions");
+go("quiz");
+
+loadQuestion();
 }
 
-/* SUBMIT */
-function submitAssignment(){
+/* LOAD QUESTION */
+function loadQuestion(){
 
-const index=
-localStorage.getItem(
-"currentIndex"
-);
+selectedAnswer=null;
 
-const students=
-JSON.parse(
-localStorage.getItem(
-"students"
-)||"{}"
-);
-
-students[index].q1=
-document
-.getElementById("q1")
-.value;
-
-students[index].q2a=
-document
-.getElementById("q2a")
-.value;
-
-students[index].q2b=
-document
-.getElementById("q2b")
-.value;
-
-students[index].q2c=
-document
-.getElementById("q2c")
-.value;
-
-localStorage.setItem(
-"students",
-JSON.stringify(students)
-);
-
-const s=
-students[index];
-
-const message=
-`📘 SHS Assignment
-
-👤 Name: ${s.name}
-🏫 School: ${s.school}
-📞 Phone: ${s.phone}
-🆔 Index: ${s.index}
-
-Q1:
-${s.q1}
-
-Q2A:
-${s.q2a}
-
-Q2B:
-${s.q2b}
-
-Q2C:
-${s.q2c}`;
-
-window.open(
-`https://wa.me/233208333632?text=${encodeURIComponent(message)}`,
-"_blank"
-);
-
-alert(
-"Assignment submitted successfully ✅"
-);
-}
-
-/* HIDDEN ADMIN ROUTE */
-if(window.location.hash === "#wisekayadmin"){
-
-document.body.innerHTML = `
-
-<style>
-body{
-font-family:Segoe UI,sans-serif;
-background:#0f172a;
-color:white;
-padding:20px;
-}
-
-.card{
-background:rgba(255,255,255,0.08);
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-}
-
-input,textarea{
-width:100%;
-padding:10px;
-border:none;
-border-radius:8px;
-margin-bottom:10px;
-}
-
-button{
-background:#198754;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:8px;
-cursor:pointer;
-margin-top:10px;
-}
-</style>
-
-<h1>🔒 WISEKAY ADMIN PANEL</h1>
-
-<div id="loginBox" class="card">
-
-<h2>Admin Login</h2>
-
-<input
-type="password"
-id="adminPass"
-placeholder="Enter Password"
->
-
-<button onclick="loginAdmin()">
-Login
-</button>
-
-</div>
-
-<div id="adminPanel"
-style="display:none;">
-
-<h2>Submitted Students</h2>
-
-<div id="studentsList"></div>
-
-</div>
-`;
-
-window.loginAdmin = function(){
-
-const pass =
-document
-.getElementById(
-"adminPass"
-).value;
-
-if(
-pass !==
-"Wisekay2030"
-){
-alert(
-"Wrong Password ❌"
-);
-return;
-}
+const q=
+questions[currentQuestion];
 
 document
 .getElementById(
-"loginBox"
-).style.display =
-"none";
+"questionNumber"
+).innerText=
+`Question ${
+currentQuestion+1
+}/10`;
 
 document
 .getElementById(
-"adminPanel"
-).style.display =
-"block";
+"questionText"
+).innerText=
+q.q;
 
-loadStudents();
-};
-
-window.loadStudents =
-function(){
-
-const students =
-JSON.parse(
-localStorage.getItem(
-"students"
-)||"{}"
-);
-
-const container =
+const box=
 document
 .getElementById(
-"studentsList"
+"optionsBox"
 );
 
-container.innerHTML="";
+box.innerHTML="";
 
-Object.keys(students)
-.forEach(index=>{
+q.options.forEach(
+(option,index)=>{
 
-const s =
-students[index];
+box.innerHTML+=`
 
-container.innerHTML += `
-
-<div class="card">
-
-<h3>
-${s.name}
-</h3>
-
-<p>
-School:
-${s.school}
-</p>
-
-<p>
-Index:
-${s.index}
-</p>
-
-<p>
-Phone:
-${s.phone}
-</p>
-
-<hr>
-
-<h4>
-Student Answers
-</h4>
-
-<p>
-<b>Q1:</b>
-${s.q1 || ""}
-</p>
-
-<p>
-<b>Q2A:</b>
-${s.q2a || ""}
-</p>
-
-<p>
-<b>Q2B:</b>
-${s.q2b || ""}
-</p>
-
-<p>
-<b>Q2C:</b>
-${s.q2c || ""}
-</p>
-
-<hr>
-
-<h4>
-Mark Student
-</h4>
-
-<label>Q1</label>
-<input
-type="number"
-min="0"
-max="1"
-id="q1_${index}"
-value="${s.q1Mark || 0}"
+<div
+class="option"
+onclick="selectAnswer(
+${index},this
+)"
 >
-
-<label>Q2A</label>
-<input
-type="number"
-min="0"
-max="1"
-id="q2a_${index}"
-value="${s.q2aMark || 0}"
->
-
-<label>Q2B</label>
-<input
-type="number"
-min="0"
-max="1"
-id="q2b_${index}"
-value="${s.q2bMark || 0}"
->
-
-<label>Q2C</label>
-<input
-type="number"
-min="0"
-max="1"
-id="q2c_${index}"
-value="${s.q2cMark || 0}"
->
-
-<label>
-Teacher Comment
-</label>
-
-<textarea
-id="comment_${index}"
->${s.comment || ""}</textarea>
-
-<button
-onclick="saveMarks('${index}')"
->
-Save Marks
-</button>
-
-<button
-onclick="sendResult('${index}')"
->
-Send Result
-</button>
-
+${option}
 </div>
 `;
 });
-};
+}
 
-window.saveMarks =
-function(index){
+/* SELECT */
+function selectAnswer(
+index,el
+){
 
-const students =
-JSON.parse(
-localStorage.getItem(
-"students"
-)||"{}"
-);
+selectedAnswer=index;
 
-students[index]
-.q1Mark =
-Number(
 document
-.getElementById(
-`q1_${index}`
-).value
-);
-
-students[index]
-.q2aMark =
-Number(
-document
-.getElementById(
-`q2a_${index}`
-).value
-);
-
-students[index]
-.q2bMark =
-Number(
-document
-.getElementById(
-`q2b_${index}`
-).value
-);
-
-students[index]
-.q2cMark =
-Number(
-document
-.getElementById(
-`q2c_${index}`
-).value
-);
-
-students[index]
-.comment =
-document
-.getElementById(
-`comment_${index}`
-).value;
-
-students[index]
-.score =
-
-students[index]
-.q1Mark +
-
-students[index]
-.q2aMark +
-
-students[index]
-.q2bMark +
-
-students[index]
-.q2cMark;
-
-localStorage.setItem(
-"students",
-JSON.stringify(
-students
+.querySelectorAll(
+".option"
+)
+.forEach(o=>
+o.classList.remove(
+"selected"
 )
 );
 
-alert(
-"Marks saved ✅"
+el.classList.add(
+"selected"
 );
-};
-
-window.sendResult =
-function(index){
-
-const students =
-JSON.parse(
-localStorage.getItem(
-"students"
-)||"{}"
-);
-
-const s =
-students[index];
-
-const msg =
-`📘 SHS RESULT
-
-👤 ${s.name}
-🆔 ${s.index}
-
-Q1:
-${s.q1Mark}/1
-
-Q2A:
-${s.q2aMark}/1
-
-Q2B:
-${s.q2bMark}/1
-
-Q2C:
-${s.q2cMark}/1
-
-✅ Total:
-${s.score}/4
-
-💬 Teacher Comment:
-${s.comment}`;
-
-window.open(
-`https://wa.me/233${s.phone.slice(1)}?text=${encodeURIComponent(msg)}`,
-"_blank"
-);
-};
-  }
-
-</script>
-
-</body>
-    </html>
+}
