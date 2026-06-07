@@ -1,728 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SHS Ghana Curriculum | Social Studies Assignment</title>
+  <meta charset="UTF-8">
+  <title>Student Results Portal</title>
 
-<style>
-body{
-  margin:0;
-  font-family:"Segoe UI",Arial,sans-serif;
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
 
-  /* YOUR IMAGE BACKGROUND */
-  background:url('images/Screenshot_20260522-114440.jpg') center/cover no-repeat fixed;
+    .container {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      margin: auto;
+      margin-bottom: 20px;
+    }
 
-  color:white;
-}
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+    }
 
-/* LOADER */
-#loader{
-  position:fixed;
-  width:100%;
-  height:100vh;
-  background:#0f172a;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-  color:white;
-  font-size:20px;
-}
+    button {
+      padding: 12px 20px;
+      background: #22c55e;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-header{
-  background:linear-gradient(90deg,#0b5ed7,#198754);
-  color:white;
-  padding:15px;
-  text-align:center;
-  box-shadow:0 2px 15px rgba(0,0,0,0.3);
-}
+    button:hover {
+      background: #16a34a;
+    }
 
-header h1{
-  margin:5px 0;
-  font-size:24px;
-}
+    .result {
+      margin-top: 20px;
+      background: #0b1220;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+      text-align: left;
+    }
 
-header p{
-  margin:0;
-  font-size:14px;
-}
-
-#clock{
-  margin-top:8px;
-  font-size:18px;
-}
-
-.page{
-  display:none;
-  padding:20px;
-  max-width:900px;
-  margin:auto;
-  animation:fade 0.5s ease;
-}
-
-.page.active{
-  display:block;
-}
-
-@keyframes fade{
-  from{
-    opacity:0;
-    transform:translateY(10px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-.card{
-  background:rgba(255,255,255,0.1);
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,0.2);
-  padding:20px;
-  margin-bottom:20px;
-  border-radius:15px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.3);
-}
-
-button{
-  background:linear-gradient(45deg,#0b5ed7,#198754);
-  color:white;
-  border:none;
-  padding:12px 20px;
-  font-size:15px;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.3s;
-  font-weight:bold;
-  margin-right:10px;
-  margin-top:5px;
-}
-
-button:hover{
-  transform:scale(1.05);
-  opacity:0.9;
-}
-
-input,textarea,select{
-  width:100%;
-  padding:12px;
-  margin-top:6px;
-  margin-bottom:15px;
-  border-radius:8px;
-  border:none;
-  outline:none;
-  background:#e2e8f0;
-  font-size:14px;
-  color:black;
-}
-
-textarea{
-  min-height:120px;
-}
-
-img{
-  max-width:100%;
-  border-radius:8px;
-  margin-top:10px;
-  display:none;
-}
-
-.footer{
-  text-align:center;
-  font-size:13px;
-  color:#ddd;
-  padding:20px;
-}
-
-.nav-btns{
-  text-align:center;
-  margin-top:10px;
-}
-
-.nav-btns button{
-  margin:5px;
-}
-
-a{
-  color:#4ade80;
-}
-</style>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    .status {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #38bdf8;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-  <h1>Loading SHS Portal...</h1>
-</div>
+  <!-- 🔍 STUDENT CHECKER -->
+  <div class="container">
+    <h1>📊 Student Results Portal</h1>
 
-<header>
-  <h1>SHS Ghana Curriculum</h1>
-  <p>Social Studies – SHS 1 | Vacation Assignment</p>
+    <input type="text" id="indexNo" placeholder="Enter Index Number">
+    <button onclick="checkResult()">Check Result</button>
 
-  <h3 id="clock"></h3>
+    <div class="status" id="status"></div>
 
-  <div class="nav-btns">
-    <button onclick="go('home')">Home</button>
-    <button onclick="go('details')">Start Assignment</button>
-    <button onclick="go('portal')">Results Portal</button>
-  </div>
-</header>
-
-<!-- HOME -->
-<div class="page active" id="home">
-  <div class="card">
-    <h2>Welcome 👋</h2>
-    <p>
-      This is the official
-      <b>SHS Social Studies Vacation Assignment</b>.
-      Complete all sections carefully before submission.
-    </p>
-
-    <button onclick="go('details')">
-      Start Assignment
-    </button>
-  </div>
-</div>
-
-<!-- STUDENT DETAILS -->
-<div class="page" id="details">
-  <div class="card">
-
-    <h2>Student Details</h2>
-
-    <label>Full Name</label>
-    <input id="name" required>
-
-    <label>School Name</label>
-    <input id="school" required>
-
-    <label>Class</label>
-    <input value="SHS 1" disabled>
-
-    <label>Index Number</label>
-
-    <select id="index" required>
-      <option value="">-- Select Index Number --</option>
-    </select>
-
-    <button onclick="saveDetails()">
-      Continue
-    </button>
-
-  </div>
-</div>
-
-<!-- INSTRUCTIONS -->
-<div class="page" id="instructions">
-  <div class="card">
-
-    <h2>Reading Assignment</h2>
-
-    <ul>
-      <li>A Geographical and Historical Sketch of Africa</li>
-      <li>Civic Ideals and Practices</li>
-      <li>Indigenous Knowledge Systems</li>
-      <li>Ethics and Ethical Behaviours</li>
-    </ul>
-
-    <p>
-      <b>Microsite:</b>
-      <a href="https://curriculumresources.edu.gh" target="_blank">
-        curriculumresources.edu.gh
-      </a>
-    </p>
-
-    <ol>
-      <li>Open the link above</li>
-      <li>Click on Year 1</li>
-      <li>Select Social Studies</li>
-      <li>Download the learner material</li>
-    </ol>
-
-    <button onclick="go('questions')">
-      Proceed to Assignment
-    </button>
-
-  </div>
-</div>
-
-<!-- QUESTIONS -->
-<div class="page" id="questions">
-
-  <div class="card">
-
-    <h2>PART A – Indigenous Knowledge Systems</h2>
-
-    <label>
-      1. Explain what indigenous technology is.
-    </label>
-
-    <textarea id="q1"></textarea>
-
+    <div class="result" id="resultBox">
+      <h3>Result Details</h3>
+      <p id="studentInfo"></p>
+    </div>
   </div>
 
-  <div class="card">
+  <!-- 🧑‍🏫 ADMIN PANEL -->
+  <div class="container">
+    <h2>🧑‍🏫 Admin Panel</h2>
 
-    <h3>2. Indigenous Technologies in Ancient Africa</h3>
+    <input type="text" id="newIndex" placeholder="Index Number">
+    <input type="text" id="newName" placeholder="Student Name">
+    <input type="number" id="newScore" placeholder="Score">
 
-    <h4>(a) Metalworking</h4>
+    <button onclick="addStudent()">➕ Add Student</button>
 
-    <textarea id="q2a"></textarea>
-
-    <input
-      type="file"
-      id="img2a"
-      accept="image/*"
-      onchange="previewImage(event,'preview2a')"
-    >
-
-    <img id="preview2a">
-
-    <h4>(b) Irrigation System</h4>
-
-    <textarea id="q2b"></textarea>
-
-    <input
-      type="file"
-      id="img2b"
-      accept="image/*"
-      onchange="previewImage(event,'preview2b')"
-    >
-
-    <img id="preview2b">
-
-    <h4>(c) Third Illustration</h4>
-
-    <textarea id="q2c"></textarea>
-
-    <input
-      type="file"
-      id="img2c"
-      accept="image/*"
-      onchange="previewImage(event,'preview2c')"
-    >
-
-    <img id="preview2c">
-
+    <p id="adminStatus"></p>
   </div>
 
-  <button onclick="submitAssignment()">
-    Submit Assignment
-  </button>
+  <script>
 
-</div>
+    // 💾 Load saved students OR empty array
+    let students = JSON.parse(localStorage.getItem("students")) || [];
 
-<!-- RESULT -->
-<div class="page" id="result">
+    // 📊 CHECK RESULT
+    function checkResult() {
+      const index = document.getElementById("indexNo").value;
+      const status = document.getElementById("status");
+      const resultBox = document.getElementById("resultBox");
+      const info = document.getElementById("studentInfo");
 
-  <div class="card">
+      const student = students.find(s => s.index === index);
 
-    <h2>Submission Summary ✅</h2>
+      if (!student) {
+        status.innerText = "❌ Student not found";
+        resultBox.style.display = "none";
+        return;
+      }
 
-    <p><b>Name:</b> <span id="rName"></span></p>
-    <p><b>School:</b> <span id="rSchool"></span></p>
-    <p><b>Index Number:</b> <span id="rIndex"></span></p>
+      status.innerText = "✅ Result Found";
+      resultBox.style.display = "block";
 
-    <hr>
+      info.innerHTML = `
+        <b>Name:</b> ${student.name}<br>
+        <b>Index:</b> ${student.index}<br>
+        <b>Score:</b> ${student.score}<br>
+        <b>Grade:</b> ${student.grade}
+      `;
 
-    <h3>Answers Submitted</h3>
-
-    <p><b>1.</b> <span id="rQ1"></span></p>
-
-    <p><b>2a.</b> <span id="rQ2a"></span></p>
-    <img id="rImg2a">
-
-    <p><b>2b.</b> <span id="rQ2b"></span></p>
-    <img id="rImg2b">
-
-    <p><b>2c.</b> <span id="rQ2c"></span></p>
-    <img id="rImg2c">
-
-    <hr>
-
-    <p id="rScore">
-      <b>Score:</b> 0 / 4
-    </p>
-
-    <button onclick="window.print()">
-      Print
-    </button>
-
-    <button onclick="sendWhatsApp()">
-      Send via WhatsApp
-    </button>
-
-  </div>
-
-</div>
-
-<!-- RESULTS PORTAL -->
-<div class="page" id="portal">
-
-  <div class="card">
-
-    <h2>Check Your Submitted Assignment</h2>
-
-    <label>Enter your Index Number</label>
-
-    <input
-      id="portalIndex"
-      placeholder="e.g. 123456"
-    >
-
-    <button onclick="checkPortal()">
-      Check Results
-    </button>
-
-    <button onclick="downloadPortalPDF()">
-      Download PDF
-    </button>
-
-    <div id="portalResult" style="margin-top:20px;"></div>
-
-    <button onclick="go('home')" style="margin-top:15px;">
-      Back to Home
-    </button>
-
-  </div>
-
-</div>
-
-<div class="footer">
-  © SHS Ghana Curriculum | Academic Use Only
-</div>
-
-<script>
-
-/* LOADER */
-window.addEventListener("load",()=>{
-  document.getElementById("loader").style.display="none";
-});
-
-/* CLOCK */
-setInterval(()=>{
-  document.getElementById("clock").innerText =
-  new Date().toLocaleTimeString();
-},1000);
-
-/* NAVIGATION */
-function go(page){
-  document.querySelectorAll(".page")
-  .forEach(p=>p.classList.remove("active"));
-
-  document.getElementById(page)
-  .classList.add("active");
-}
-
-/* SAVE DETAILS */
-function saveDetails(){
-
-  const nameEl=document.getElementById("name");
-  const schoolEl=document.getElementById("school");
-  const indexEl=document.getElementById("index");
-
-  let valid=true;
-
-  [nameEl,schoolEl,indexEl].forEach(el=>{
-    if(!el.value){
-      el.style.border="2px solid red";
-      valid=false;
-    }else{
-      el.style.border="none";
+      sendWhatsApp(student);
     }
-  });
 
-  if(!valid){
-    alert("Please fill all fields.");
-    return;
-  }
+    // 📲 WHATSAPP SENDER
+    function sendWhatsApp(student) {
+      const phoneNumber = "233XXXXXXXXX"; // 🔁 CHANGE THIS
 
-  const students=
-  JSON.parse(localStorage.getItem("students")||"{}");
+      const message =
+        `Hello ${student.name}, your result is ready:%0A` +
+        `Index: ${student.index}%0A` +
+        `Score: ${student.score}%0A` +
+        `Grade: ${student.grade}`;
 
-  students[indexEl.value]={
-    name:nameEl.value,
-    school:schoolEl.value,
-    q1:"",
-    q2a:"",
-    q2b:"",
-    q2c:"",
-    img2a:"",
-    img2b:"",
-    img2c:"",
-    score:0
-  };
+      const url = `https://wa.me/${phoneNumber}?text=${message}`;
 
-  localStorage.setItem(
-    "students",
-    JSON.stringify(students)
-  );
+      window.open(url, "_blank");
+    }
 
-  localStorage.setItem(
-    "currentIndex",
-    indexEl.value
-  );
+    // 🧑‍🏫 ADD STUDENT (ADMIN)
+    function addStudent() {
+      const index = document.getElementById("newIndex").value;
+      const name = document.getElementById("newName").value;
+      const score = parseInt(document.getElementById("newScore").value);
+      const adminStatus = document.getElementById("adminStatus");
 
-  go("instructions");
-}
+      if (!index || !name || isNaN(score)) {
+        adminStatus.innerText = "❌ Fill all fields";
+        return;
+      }
 
-/* IMAGE PREVIEW */
-function previewImage(event,previewId){
+      let grade = "";
 
-  const reader=new FileReader();
+      if (score >= 80) grade = "A";
+      else if (score >= 70) grade = "B";
+      else if (score >= 60) grade = "C";
+      else if (score >= 50) grade = "D";
+      else grade = "F";
 
-  reader.onload=function(){
+      const newStudent = { index, name, score, grade };
 
-    const img=document.getElementById(previewId);
+      students.push(newStudent);
 
-    img.src=reader.result;
+      localStorage.setItem("students", JSON.stringify(students));
 
-    img.style.display="block";
-  }
+      adminStatus.innerText = "✅ Student added successfully!";
+    }
 
-  reader.readAsDataURL(event.target.files[0]);
-}
-
-/* ANSWERS */
-const correctAnswers={
-  q1:"Indigenous technology",
-  q2a:"Metalworking",
-  q2b:"Irrigation",
-  q2c:"pottery"
-};
-
-  /* SUBMIT */
-function submitAssignment(){
-
-  saveAnswers();
-
-  const index = localStorage.getItem("currentIndex");
-
-  if(!index) return;
-
-  const students =
-  JSON.parse(localStorage.getItem("students") || "{}");
-
-  const s = students[index];
-
-  const message =
-`📘 SHS Assignment Submission
-
-👤 Name: ${s.name}
-🏫 School: ${s.school}
-🆔 Index: ${index}
-
-📝 Answers Submitted:
-1. ${s.q1}
-
-2a. ${s.q2a}
-2b. ${s.q2b}
-2c. ${s.q2c}
-
-✅ Score: ${s.score}/4`;
-
-  const phoneNumber = "233208333632";
-
-  const url =
-`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-  // Opens WhatsApp immediately
-  window.open(url, "_blank");
-
-  // Optional success message
-  alert("Assignment submitted successfully ✅ Redirecting to WhatsApp...");
-}
-
-/* SAVE ANSWERS */
-function saveAnswers(){
-
-  const index=
-  localStorage.getItem("currentIndex");
-
-  if(!index)return;
-
-  const students=
-  JSON.parse(localStorage.getItem("students")||"{}");
-
-  const q1=document.getElementById("q1").value.trim();
-  const q2a=document.getElementById("q2a").value.trim();
-  const q2b=document.getElementById("q2b").value.trim();
-  const q2c=document.getElementById("q2c").value.trim();
-
-  let score=0;
-
-  if(q1.toLowerCase().includes(correctAnswers.q1.toLowerCase()))score++;
-  if(q2a.toLowerCase().includes(correctAnswers.q2a.toLowerCase()))score++;
-  if(q2b.toLowerCase().includes(correctAnswers.q2b.toLowerCase()))score++;
-  if(q2c.toLowerCase().includes(correctAnswers.q2c.toLowerCase()))score++;
-
-  students[index]={
-    ...students[index],
-    q1,q2a,q2b,q2c,
-    img2a:document.getElementById("preview2a").src,
-    img2b:document.getElementById("preview2b").src,
-    img2c:document.getElementById("preview2c").src,
-    score
-  };
-
-  localStorage.setItem(
-    "students",
-    JSON.stringify(students)
-  );
-
-  document.getElementById("rName").innerText=
-  students[index].name;
-
-  document.getElementById("rSchool").innerText=
-  students[index].school;
-
-  document.getElementById("rIndex").innerText=
-  index;
-
-  document.getElementById("rQ1").innerText=q1;
-  document.getElementById("rQ2a").innerText=q2a;
-  document.getElementById("rQ2b").innerText=q2b;
-  document.getElementById("rQ2c").innerText=q2c;
-
-  document.getElementById("rImg2a").src=
-  students[index].img2a;
-
-  document.getElementById("rImg2b").src=
-  students[index].img2b;
-
-  document.getElementById("rImg2c").src=
-  students[index].img2c;
-
-  document.getElementById("rImg2a").style.display=
-  students[index].img2a?"block":"none";
-
-  document.getElementById("rImg2b").style.display=
-  students[index].img2b?"block":"none";
-
-  document.getElementById("rImg2c").style.display=
-  students[index].img2c?"block":"none";
-
-  document.getElementById("rScore").innerHTML=
-  `<b>Score:</b> ${score} / 4`;
-}
-
-/* WHATSAPP */
-function sendWhatsApp(){
-
-  const index=
-  localStorage.getItem("currentIndex");
-
-  if(!index)return;
-
-  const students=
-  JSON.parse(localStorage.getItem("students")||"{}");
-
-  const s=students[index];
-
-  const message=
-`SHS Assignment
-
-Name: ${s.name}
-School: ${s.school}
-Index: ${index}
-Score: ${s.score}/4`;
-
-  const phoneNumber="233208333632";
-
-  const url=
-  `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-  window.open(url,"_blank");
-}
-
-/* PORTAL */
-function checkPortal(){
-
-  const inputIndex=
-  document.getElementById("portalIndex").value.trim();
-
-  const portalResult=
-  document.getElementById("portalResult");
-
-  const students=
-  JSON.parse(localStorage.getItem("students")||"{}");
-
-  if(students[inputIndex]){
-
-    const s=students[inputIndex];
-
-    portalResult.innerHTML=`
-      <h3>${s.name}</h3>
-      <p>School: ${s.school}</p>
-      <p>Score: ${s.score}/4</p>
-    `;
-
-  }else{
-
-    portalResult.innerHTML=
-    `<p style="color:red;">No result found.</p>`;
-  }
-}
-
-/* PDF */
-function downloadPortalPDF(){
-
-  const inputIndex=
-  document.getElementById("portalIndex").value.trim();
-
-  const students=
-  JSON.parse(localStorage.getItem("students")||"{}");
-
-  if(!students[inputIndex]){
-    alert("No result found.");
-    return;
-  }
-
-  const s=students[inputIndex];
-
-  const { jsPDF } = window.jspdf;
-
-  const doc=new jsPDF();
-
-  doc.text("SHS Assignment",10,10);
-  doc.text(`Name: ${s.name}`,10,20);
-  doc.text(`School: ${s.school}`,10,30);
-  doc.text(`Score: ${s.score}/4`,10,40);
-
-  doc.save(`Assignment_${inputIndex}.pdf`);
-}
-
-/* GENERATE INDEX NUMBERS */
-function generateIndexNumbers(){
-
-  const select=
-  document.getElementById("index");
-
-  for(let i=0;i<10;i++){
-
-    let num=
-    Math.floor(100000+Math.random()*900000);
-
-    let option=
-    document.createElement("option");
-
-    option.value=num;
-    option.text=num;
-
-    select.add(option);
-  }
-}
-
-window.onload=function(){
-  generateIndexNumbers();
-}
-
-</script>
+  </script>
 
 </body>
-      </html>
+</html>
