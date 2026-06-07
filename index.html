@@ -1,175 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Student Results Portal</title>
+<meta charset="UTF-8">
+<title>School Results System</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      text-align: center;
-      padding: 40px;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+}
 
-    .container {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-      margin: auto;
-      margin-bottom: 20px;
-    }
+/* HEADER */
+header{
+  background:#1e293b;
+  padding:15px;
+  text-align:center;
+  font-size:20px;
+}
 
-    input {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 6px;
-    }
+/* LAYOUT */
+.container{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  padding:20px;
+  flex-wrap:wrap;
+}
 
-    button {
-      padding: 12px 20px;
-      background: #22c55e;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-    }
+/* BOXES */
+.box{
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+  width:320px;
+}
 
-    button:hover {
-      background: #16a34a;
-    }
+/* INPUT */
+input{
+  width:90%;
+  padding:10px;
+  margin:8px 0;
+  border:none;
+  border-radius:6px;
+}
 
-    .result {
-      margin-top: 20px;
-      background: #0b1220;
-      padding: 15px;
-      border-radius: 8px;
-      display: none;
-      text-align: left;
-    }
+/* BUTTON */
+button{
+  width:100%;
+  padding:10px;
+  background:#22c55e;
+  border:none;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+button:hover{background:#16a34a}
 
-    .status {
-      margin-top: 15px;
-      font-weight: bold;
-      color: #38bdf8;
-    }
-  </style>
+/* RESULT */
+.result{
+  margin-top:10px;
+  background:#0b1220;
+  padding:10px;
+  border-radius:8px;
+  display:none;
+}
+
+/* ADMIN TOGGLE */
+#adminPanel{
+  display:none;
+}
+
+.toggle{
+  background:#38bdf8;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- 🔍 STUDENT CHECKER -->
-  <div class="container">
-    <h1>📊 Student Results Portal</h1>
+<header>
+📊 School Results System
+<button class="toggle" onclick="toggleAdmin()">Admin</button>
+</header>
 
-    <input type="text" id="indexNo" placeholder="Enter Index Number">
-    <button onclick="checkResult()">Check Result</button>
+<div class="container">
 
-    <div class="status" id="status"></div>
+<!-- STUDENT PANEL -->
+<div class="box">
+<h3>🎓 Student Portal</h3>
 
-    <div class="result" id="resultBox">
-      <h3>Result Details</h3>
-      <p id="studentInfo"></p>
-    </div>
-  </div>
+<input type="text" id="indexInput" placeholder="Enter Index Number">
+<button onclick="checkResult()">Check Result</button>
 
-  <!-- 🧑‍🏫 ADMIN PANEL -->
-  <div class="container">
-    <h2>🧑‍🏫 Admin Panel</h2>
+<div class="result" id="resultBox">
+<p id="resultText"></p>
+</div>
+</div>
 
-    <input type="text" id="newIndex" placeholder="Index Number">
-    <input type="text" id="newName" placeholder="Student Name">
-    <input type="number" id="newScore" placeholder="Score">
+<!-- ADMIN PANEL -->
+<div class="box" id="adminPanel">
+<h3>🧑‍🏫 Admin Panel</h3>
 
-    <button onclick="addStudent()">➕ Add Student</button>
+<input type="text" id="aIndex" placeholder="Index Number">
+<input type="text" id="aName" placeholder="Name">
+<input type="number" id="aScore" placeholder="Score">
 
-    <p id="adminStatus"></p>
-  </div>
+<button onclick="addStudent()">Add Student</button>
 
-  <script>
+<p id="adminMsg"></p>
+</div>
 
-    // 💾 Load saved students OR empty array
-    let students = JSON.parse(localStorage.getItem("students")) || [];
+</div>
 
-    // 📊 CHECK RESULT
-    function checkResult() {
-      const index = document.getElementById("indexNo").value;
-      const status = document.getElementById("status");
-      const resultBox = document.getElementById("resultBox");
-      const info = document.getElementById("studentInfo");
+<script>
 
-      const student = students.find(s => s.index === index);
+let students = JSON.parse(localStorage.getItem("students")) || [
+  {index:"S001", name:"Kojo Mensah", score:85, grade:"A"},
+  {index:"S002", name:"Ama Serwaa", score:70, grade:"B"}
+];
 
-      if (!student) {
-        status.innerText = "❌ Student not found";
-        resultBox.style.display = "none";
-        return;
-      }
+// 🎓 CHECK RESULT
+function checkResult(){
+  let index = document.getElementById("indexInput").value;
+  let found = students.find(s => s.index === index);
 
-      status.innerText = "✅ Result Found";
-      resultBox.style.display = "block";
+  let box = document.getElementById("resultBox");
+  let text = document.getElementById("resultText");
 
-      info.innerHTML = `
-        <b>Name:</b> ${student.name}<br>
-        <b>Index:</b> ${student.index}<br>
-        <b>Score:</b> ${student.score}<br>
-        <b>Grade:</b> ${student.grade}
-      `;
+  if(!found){
+    text.innerHTML = "❌ Not found";
+    box.style.display="block";
+    return;
+  }
 
-      sendWhatsApp(student);
-    }
+  text.innerHTML = `
+  <b>Name:</b> ${found.name}<br>
+  <b>Index:</b> ${found.index}<br>
+  <b>Score:</b> ${found.score}<br>
+  <b>Grade:</b> ${found.grade}
+  `;
 
-    // 📲 WHATSAPP SENDER
-    function sendWhatsApp(student) {
-      const phoneNumber = "233208333632"; // 
+  box.style.display="block";
 
-      const message =
-        `Hello ${student.name}, your result is ready:%0A` +
-        `Index: ${student.index}%0A` +
-        `Score: ${student.score}%0A` +
-        `Grade: ${student.grade}`;
+  sendWhatsApp(found);
+}
 
-      const url = `https://wa.me/${phoneNumber}?text=${message}`;
+// 📲 WHATSAPP
+function sendWhatsApp(student){
+  const phone = "233208333632";
 
-      window.open(url, "_blank");
-    }
+  const msg =
+  `Result Ready:%0AName: ${student.name}%0AScore: ${student.score}%0AGrade: ${student.grade}`;
 
-    // 🧑‍🏫 ADD STUDENT (ADMIN)
-    function addStudent() {
-      const index = document.getElementById("newIndex").value;
-      const name = document.getElementById("newName").value;
-      const score = parseInt(document.getElementById("newScore").value);
-      const adminStatus = document.getElementById("adminStatus");
+  window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+}
 
-      if (!index || !name || isNaN(score)) {
-        adminStatus.innerText = "❌ Fill all fields";
-        return;
-      }
+// 🧑‍🏫 ADD STUDENT
+function addStudent(){
+  let index = document.getElementById("aIndex").value;
+  let name = document.getElementById("aName").value;
+  let score = parseInt(document.getElementById("aScore").value);
+  let msg = document.getElementById("adminMsg");
 
-      let grade = "";
+  if(!index || !name || isNaN(score)){
+    msg.innerText="❌ Fill all fields";
+    return;
+  }
 
-      if (score >= 80) grade = "A";
-      else if (score >= 70) grade = "B";
-      else if (score >= 60) grade = "C";
-      else if (score >= 50) grade = "D";
-      else grade = "F";
+  let grade = score>=80?"A":
+              score>=70?"B":
+              score>=60?"C":
+              score>=50?"D":"F";
 
-      const newStudent = { index, name, score, grade };
+  students.push({index,name,score,grade});
+  localStorage.setItem("students", JSON.stringify(students));
 
-      students.push(newStudent);
+  msg.innerText="✅ Student Added";
+}
 
-      localStorage.setItem("students", JSON.stringify(students));
+// 🔐 TOGGLE ADMIN
+function toggleAdmin(){
+  let panel = document.getElementById("adminPanel");
+  panel.style.display = panel.style.display === "none" ? "block" : "none";
+}
 
-      adminStatus.innerText = "✅ Student added successfully!";
-    }
-
-  </script>
+</script>
 
 </body>
 </html>
