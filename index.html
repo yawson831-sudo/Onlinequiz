@@ -427,67 +427,7 @@ async function saveDetails() {
   }
   }
 
-const name=
-document
-.getElementById("name")
-.value.trim();
 
-const school=
-document
-.getElementById("school")
-.value.trim();
-
-const phone=
-document
-.getElementById("phone")
-.value.trim();
-
-const index=
-document
-.getElementById("index")
-.value.trim();
-
-if(
-!name||
-!school||
-!phone||
-!index
-){
-alert(
-"Please fill all fields"
-);
-return;
-}
-
-const students=
-JSON.parse(
-localStorage.getItem(
-"students"
-)||"{}"
-);
-
-students[index]={
-name,
-school,
-phone,
-index,
-answers:[]
-};
-
-localStorage.setItem(
-"students",
-JSON.stringify(students)
-);
-
-localStorage.setItem(
-"currentIndex",
-index
-);
-
-go("quiz");
-
-loadQuestion();
-}
 
 /* LOAD QUESTION */
 function loadQuestion(){
