@@ -912,6 +912,7 @@ loadStudents();
 };
 
 /* LOAD STUDENTS */
+/* LOAD STUDENTS */
 window.loadStudents =
 function(){
 
@@ -921,6 +922,148 @@ localStorage.getItem(
 "students"
 )||"{}"
 );
+
+const search =
+document
+.getElementById(
+"searchIndex"
+)
+.value
+.toLowerCase();
+
+const box =
+document
+.getElementById(
+"studentsBox"
+);
+
+box.innerHTML="";
+
+const indexes =
+Object.keys(students);
+
+if(indexes.length===0){
+box.innerHTML=
+`
+<div class="card">
+<h3>No submissions yet 😢</h3>
+</div>
+`;
+return;
+}
+
+/* TOTAL SUBMISSIONS */
+box.innerHTML += `
+<div class="card">
+<h2>
+📥 Total Submissions:
+${indexes.length}
+</h2>
+</div>
+`;
+
+indexes.forEach(index=>{
+
+if(
+search &&
+!index
+.toLowerCase()
+.includes(search)
+){
+return;
+}
+
+const s =
+students[index];
+
+let answers = "";
+
+for(
+let i=0;
+i<10;
+i++
+){
+
+answers += `
+
+<p>
+<b>Q${i+1}</b>:
+${
+questions[i]
+.options[
+s.answers[i]
+]
+||"No Answer"
+}
+</p>
+
+<select
+id="mark_${index}_${i}"
+>
+
+<option value="0">
+0
+</option>
+
+<option value="1">
+1
+</option>
+
+</select>
+`;
+}
+
+box.innerHTML += `
+
+<div class="card">
+
+<h2>
+👨‍🎓 ${s.name}
+</h2>
+
+<p>
+🆔 <b>Index:</b>
+${s.index}
+</p>
+
+<p>
+🏫 <b>School:</b>
+${s.school}
+</p>
+
+<p>
+📞 <b>Phone:</b>
+${s.phone}
+</p>
+
+<hr>
+
+<h3>
+📘 Submitted Answers
+</h3>
+
+${answers}
+
+<textarea
+id="comment_${index}"
+placeholder="Teacher comment"
+></textarea>
+
+<button
+onclick="
+saveMarks(
+'${index}'
+)
+"
+>
+Release Result
+</button>
+
+</div>
+`;
+});
+
+};
 
 const search =
 document
