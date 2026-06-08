@@ -392,28 +392,40 @@ document
 /* SAVE DETAILS */
 async function saveDetails() {
   try {
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
-    const network = document.getElementById("network").value;
+    const name = document.getElementById("name").value.trim();
+    const school = document.getElementById("school").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const index = document.getElementById("index").value.trim();
 
-    if (!name || !phone || !network) {
+    if (!name || !school || !phone || !index) {
       alert("Please fill all fields");
       return;
     }
 
-    await setDoc(doc(db, "orders", phone), {
-      name: name,
-      phone: phone,
-      network: network,
+    await setDoc(doc(db, "students", index), {
+      name,
+      school,
+      phone,
+      index,
+      answers: [],
       timestamp: new Date()
     });
 
-    alert("Details saved successfully!");
+    localStorage.setItem("currentIndex", index);
+
+    localStorage.setItem("students", JSON.stringify({
+      [index]: { name, school, phone, index, answers: [] }
+    }));
+
+    alert("Saved successfully!");
+    go("quiz");
+    loadQuestion();
+
   } catch (error) {
-    console.error("Error saving details:", error);
-    alert("Failed to save details");
+    console.error(error);
+    alert("Failed to save");
   }
-}
+  }
 
 const name=
 document
