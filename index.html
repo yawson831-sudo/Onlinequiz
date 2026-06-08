@@ -390,7 +390,30 @@ document
 }
 
 /* SAVE DETAILS */
-async function saveDetails(){
+async function saveDetails() {
+  try {
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const network = document.getElementById("network").value;
+
+    if (!name || !phone || !network) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    await setDoc(doc(db, "orders", phone), {
+      name: name,
+      phone: phone,
+      network: network,
+      timestamp: new Date()
+    });
+
+    alert("Details saved successfully!");
+  } catch (error) {
+    console.error("Error saving details:", error);
+    alert("Failed to save details");
+  }
+}
 
 const name=
 document
