@@ -1,119 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>SHS Ghana Curriculum</title>
-
-<style>
-body{
-margin:0;
-font-family:"Segoe UI",sans-serif;
-background:url('images/Screenshot_20260522-114440.jpg')
-center/cover no-repeat;
-color:white;
-}
-
-#loader{
-position:fixed;
-width:100%;
-height:100vh;
-background:#0f172a;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-}
-
-header{
-background:linear-gradient(
-90deg,#0b5ed7,#198754
-);
-padding:15px;
-text-align:center;
-box-shadow:0 2px 15px rgba(0,0,0,.3);
-}
-
-.card{
-background:rgba(0,0,0,.1);
-background:rgba(0,0,0,0.6);
-padding:20px;
-border-radius:15px;
-max-width:700px;
-margin:20px auto;
-}
-
-.page{
-display:none;
-padding:20px;
-}
-
-.page.active{
-display:block;
-}
-
-input{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-margin-bottom:15px;
-font-size:16px;
-}
-
-button{
-background:linear-gradient(
-45deg,#0b5ed7,#198754
-);
-border:none;
-padding:12px 20px;
-border-radius:10px;
-color:white;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.option{
-background:rgba(255,255,255,.1);
-padding:15px;
-border-radius:10px;
-margin-bottom:10px;
-cursor:pointer;
-border:2px solid transparent;
-}
-
-.option:hover{
-border:2px solid #4ade80;
-}
-
-.selected{
-border:2px solid #4ade80;
-background:rgba(74,222,128,.2);
-}@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-</style>
-</head>
-
-<body>
-
-<div id="loader">
-<h1>Loading SHS Portal...</h1>
-</div>
-
-<header>
-
-<img
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport"  
+content="width=device-width, initial-scale=1.0">  <title>SHS Ghana Curriculum</title>  <style>  
+body{  
+margin:0;  
+font-family:"Segoe UI",sans-serif;  
+background:url('images/Screenshot_20260522-114440.jpg')  
+center/cover no-repeat;  
+color:white;  
+}  
+  
+#loader{  
+position:fixed;  
+width:100%;  
+height:100vh;  
+background:#0f172a;  
+display:flex;  
+justify-content:center;  
+align-items:center;  
+z-index:9999;  
+}  
+  
+header{  
+background:linear-gradient(  
+90deg,#0b5ed7,#198754  
+);  
+padding:15px;  
+text-align:center;  
+box-shadow:0 2px 15px rgba(0,0,0,.3);  
+}  
+  
+.card{  
+background:rgba(0,0,0,.1);  
+background:rgba(0,0,0,0.6);  
+padding:20px;  
+border-radius:15px;  
+max-width:700px;  
+margin:20px auto;  
+}  
+  
+.page{  
+display:none;  
+padding:20px;  
+}  
+  
+.page.active{  
+display:block;  
+}  
+  
+input{  
+width:100%;  
+padding:12px;  
+border:none;  
+border-radius:8px;  
+margin-bottom:15px;  
+font-size:16px;  
+}  
+  
+button{  
+background:linear-gradient(  
+45deg,#0b5ed7,#198754  
+);  
+border:none;  
+padding:12px 20px;  
+border-radius:10px;  
+color:white;  
+font-size:16px;  
+font-weight:bold;  
+cursor:pointer;  
+}  
+  
+.option{  
+background:rgba(255,255,255,.1);  
+padding:15px;  
+border-radius:10px;  
+margin-bottom:10px;  
+cursor:pointer;  
+border:2px solid transparent;  
+}  
+  
+.option:hover{  
+border:2px solid #4ade80;  
+}  
+  
+.selected{  
+border:2px solid #4ade80;  
+background:rgba(74,222,128,.2);  
+}@keyframes fadeUp{  
+from{  
+opacity:0;  
+transform:translateY(20px);  
+}  
+to{  
+opacity:1;  
+transform:translateY(0);  
+}  
+}  
+</style>  </head>  <body>  <div id="loader">  
+<h1>Loading SHS Portal...</h1>  
+</div>  <header>  <img
 src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200"
 style="
 width:100%;
@@ -121,561 +107,514 @@ max-height:220px;
 object-fit:cover;
 border-radius:0 0 20px 20px;
 "
->
 
-<h1>
-SHS Ghana Curriculum
-</h1>
+> 
 
-<p>
-Social Studies Assignment
-</p>
-
-</header>
-
-<!-- HOME -->
-<div class="page active" id="home">
-
-<div class="card">
-<img
-src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png"
-style="
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-"
->
-<h2>Welcome 👋</h2>
-
-<p>
-Complete all questions carefully.
-You cannot skip or go back.
-</p>
-
-<button onclick="go('details')">
-Start Assignment
-</button>
-
-</div>
-</div>
-
-<!-- DETAILS -->
-<div class="page" id="details">
-
-<div class="card">
-
-<h2>Student Details</h2>
-
-<input
+<h1>  
+SHS Ghana Curriculum  
+</h1>  <p>  
+Social Studies Assignment  
+</p>  </header>  <!-- HOME -->  <div class="page active" id="home">  <div class="card">  
+<img  
+src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png"  
+style="  
+width:100px;  
+display:block;  
+margin:auto;  
+margin-bottom:15px;  
+"  
+>  
+<h2>Welcome 👋</h2>  <p>  
+Complete all questions carefully.  
+You cannot skip or go back.  
+</p>  <button onclick="go('details')">  
+Start Assignment  
+</button>  </div>  
+</div>  <!-- DETAILS -->  <div class="page" id="details">  <div class="card">  <h2>Student Details</h2>  <input
 id="name"
 placeholder="Full Name"
->
+
+> 
 
 <input
 id="school"
 placeholder="School Name"
->
+
+> 
 
 <input
 id="phone"
 placeholder="Phone Number"
->
+
+> 
 
 <input
 id="index"
 placeholder="Index Number"
->
 
-<button onclick="saveDetails()">
-Continue
-</button>
-
-</div>
-</div>
-
-<!-- QUIZ -->
-<div class="page" id="quiz">
-
-<div class="card">
-
-<h2 id="questionNumber">
-Question 1/10
-</h2>
-
-<h3 id="questionText"></h3>
-
-<div id="optionsBox"></div>
-
-<button onclick="nextQuestion()">
-Next
-</button>
-
-</div>
-</div>
-
-<script>
-
-/* FAST LOADER */
-setTimeout(()=>{
-document.getElementById(
-"loader"
-).style.display="none";
-},800);
-
-/* BLOCK BACK BUTTON */
-history.pushState(
-null,null,
-location.href
-);
-
-window.onpopstate=
-function(){
-history.go(1);
-};
-
-/* QUESTIONS */
-const questions=[
-
-{
-q:"What is citizenship?",
-options:[
-"Being a member of a country",
-"Playing football",
-"Going to school",
-"Sleeping"
-],
-answer:0
-},
-
-{
-q:"Which is a moral value?",
-options:[
-"Stealing",
-"Honesty",
-"Fighting",
-"Insulting"
-],
-answer:1
-},
-
-{
-q:"Who is a citizen?",
-options:[
-"A visitor",
-"A member of a country",
-"A tourist",
-"A stranger"
-],
-answer:1
-},
-
-{
-q:"Which is a responsibility of a citizen?",
-options:[
-"Destroy property",
-"Voting",
-"Fighting",
-"Stealing"
-],
-answer:1
-},
-
-{
-q:"What promotes peace?",
-options:[
-"Violence",
-"Unity",
-"Fighting",
-"Hatred"
-],
-answer:1
-},
-
-{
-q:"Which is a national symbol?",
-options:[
-"Football",
-"Flag",
-"Shoe",
-"Book"
-],
-answer:1
-},
-
-{
-q:"What helps development?",
-options:[
-"Education",
-"Violence",
-"Stealing",
-"Laziness"
-],
-answer:0
-},
-
-{
-q:"What is good behaviour?",
-options:[
-"Respect",
-"Insult",
-"Fighting",
-"Lying"
-],
-answer:0
-},
-
-{
-q:"Who leads a community?",
-options:[
-"Chief",
-"Driver",
-"Tailor",
-"Farmer"
-],
-answer:0
-},
-
-{
-q:"What should citizens obey?",
-options:[
-"Laws",
-"Rumours",
-"Violence",
-"Confusion"
-],
-answer:0
-}
-
-];
-
-let currentQuestion=0;
-let selectedAnswer=null;
-
-/* NAVIGATION */
-function go(page){
-
-document
-.querySelectorAll(".page")
-.forEach(p=>
-p.classList.remove("active")
-);
-
-document
-.getElementById(page)
-.classList.add("active");
-}
-
-/* SAVE DETAILS */
-function saveDetails(){
-
-const name=
-document
-.getElementById("name")
-.value.trim();
-
-const school=
-document
-.getElementById("school")
-.value.trim();
-
-const phone=
-document
-.getElementById("phone")
-.value.trim();
-
-const index=
-document
-.getElementById("index")
-.value.trim();
-
-if(
-!name||
-!school||
-!phone||
-!index
-){
-alert(
-"Please fill all fields"
-);
-return;
-}
-
-const students=
-JSON.parse(
-localStorage.getItem(
-"students"
-)||"{}"
-);
-
-students[index]={
-name,
-school,
-phone,
-index,
-answers:[]
-};
-
-localStorage.setItem(
-"students",
-JSON.stringify(students)
-);
-
-localStorage.setItem(
-"currentIndex",
-index
-);
-
-go("quiz");
-
-loadQuestion();
-}
-
-/* LOAD QUESTION */
-function loadQuestion(){
-
-selectedAnswer=null;
-
-const q=
-questions[currentQuestion];
-
-document
-.getElementById(
-"questionNumber"
-).innerText=
-`Question ${
-currentQuestion+1
-}/10`;
-
-document
-.getElementById(
-"questionText"
-).innerText=
-q.q;
-
-const box=
-document
-.getElementById(
-"optionsBox"
-);
-
-box.innerHTML="";
-
-q.options.forEach(
-(option,index)=>{
-
-box.innerHTML+=`
-
-<div
-class="option"
-onclick="selectAnswer(
-${index},this
-)"
->
-${option}
-</div>
-`;
-});
-}
-
-/* SELECT */
-function selectAnswer(
-index,el
-){
-
-selectedAnswer=index;
-
-document
-.querySelectorAll(
-".option"
-)
-.forEach(o=>
-o.classList.remove(
-"selected"
-)
-);
-
-el.classList.add(
-"selected"
-);
-}
-/* NEXT QUESTION */
-function nextQuestion(){
-
-if(selectedAnswer===null){
-alert(
-"Please select an answer first"
-);
-return;
-}
-
-const index =
-localStorage.getItem(
-"currentIndex"
-);
-
-const students =
-JSON.parse(
-localStorage.getItem(
-"students"
-)||"{}"
-);
-
-/* SAVE ANSWER */
-students[index]
-.answers[currentQuestion]
-=
-selectedAnswer;
-
-localStorage.setItem(
-"students",
-JSON.stringify(
-students
-)
-);
-
-/* MOVE TO NEXT */
-currentQuestion++;
-
-if(
-currentQuestion <
-questions.length
-){
-loadQuestion();
-return;
-}
-
-/* SUBMIT */
-submitAssignment();
-}
-
-/* SUBMIT */
-function submitAssignment(){
-
-const index =
-localStorage.getItem(
-"currentIndex"
-);
-
-const students =
-JSON.parse(
-localStorage.getItem(
-"students"
-)||"{}"
-);
-
-const s =
-students[index];
-
-let answersText="";
-
-s.answers.forEach(
-(ans,i)=>{
-
-answersText +=
-
-`Q${i+1}: ${
-questions[i]
-.options[ans]
-}
-
-`;
-});
-
-/* SEND TO YOUR WHATSAPP */
-
-  alert(
-"Assignment Submitted ✅"
-);
-
-/* RESET */
-go("home");
-}
-/* ==========================
-RESULTS PAGE
-========================== */
-
-if(
-window.location.hash
-===
-"#results"
-){
-
-document.body.innerHTML = `
-
-<style>
-body{
-font-family:Segoe UI,sans-serif;
-background:#0f172a;
-color:white;
-padding:20px;
-}
-
-.card{
-background:rgba(255,255,255,.08);
-padding:20px;
-border-radius:15px;
-max-width:500px;
-margin:auto;
-}
-
-input{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-margin-bottom:10px;
-font-size:15px;
-}
-
-button{
-background:#198754;
-border:none;
-padding:12px 15px;
-border-radius:8px;
-color:white;
-cursor:pointer;
-font-weight:bold;
-}
-
-.result{
-margin-top:20px;
-padding:15px;
-background:rgba(255,255,255,.08);
-border-radius:10px;
-}
-</style>
-
-<div class="card">
-
-<h1>
-📘 Student Results
-</h1>
-
-<p>
-Enter your index number
-to check result.
-</p>
-
-<input
+> 
+
+<button onclick="saveDetails()">  
+Continue  
+</button>  </div>  
+</div>  <!-- QUIZ -->  <div class="page" id="quiz">  <div class="card">  <h2 id="questionNumber">  
+Question 1/10  
+</h2>  <h3 id="questionText"></h3>  <div id="optionsBox"></div>  <button onclick="nextQuestion()">  
+Next  
+</button>  </div>  
+</div>  <script>  
+  
+/* FAST LOADER */  
+setTimeout(()=>{  
+document.getElementById(  
+"loader"  
+).style.display="none";  
+},800);  
+  
+/* BLOCK BACK BUTTON */  
+history.pushState(  
+null,null,  
+location.href  
+);  
+  
+window.onpopstate=  
+function(){  
+history.go(1);  
+};  
+  
+/* QUESTIONS */  
+const questions=[  
+  
+{  
+q:"What is citizenship?",  
+options:[  
+"Being a member of a country",  
+"Playing football",  
+"Going to school",  
+"Sleeping"  
+],  
+answer:0  
+},  
+  
+{  
+q:"Which is a moral value?",  
+options:[  
+"Stealing",  
+"Honesty",  
+"Fighting",  
+"Insulting"  
+],  
+answer:1  
+},  
+  
+{  
+q:"Who is a citizen?",  
+options:[  
+"A visitor",  
+"A member of a country",  
+"A tourist",  
+"A stranger"  
+],  
+answer:1  
+},  
+  
+{  
+q:"Which is a responsibility of a citizen?",  
+options:[  
+"Destroy property",  
+"Voting",  
+"Fighting",  
+"Stealing"  
+],  
+answer:1  
+},  
+  
+{  
+q:"What promotes peace?",  
+options:[  
+"Violence",  
+"Unity",  
+"Fighting",  
+"Hatred"  
+],  
+answer:1  
+},  
+  
+{  
+q:"Which is a national symbol?",  
+options:[  
+"Football",  
+"Flag",  
+"Shoe",  
+"Book"  
+],  
+answer:1  
+},  
+  
+{  
+q:"What helps development?",  
+options:[  
+"Education",  
+"Violence",  
+"Stealing",  
+"Laziness"  
+],  
+answer:0  
+},  
+  
+{  
+q:"What is good behaviour?",  
+options:[  
+"Respect",  
+"Insult",  
+"Fighting",  
+"Lying"  
+],  
+answer:0  
+},  
+  
+{  
+q:"Who leads a community?",  
+options:[  
+"Chief",  
+"Driver",  
+"Tailor",  
+"Farmer"  
+],  
+answer:0  
+},  
+  
+{  
+q:"What should citizens obey?",  
+options:[  
+"Laws",  
+"Rumours",  
+"Violence",  
+"Confusion"  
+],  
+answer:0  
+}  
+  
+];  
+  
+let currentQuestion=0;  
+let selectedAnswer=null;  
+  
+/* NAVIGATION */  
+function go(page){  
+  
+document  
+.querySelectorAll(".page")  
+.forEach(p=>  
+p.classList.remove("active")  
+);  
+  
+document  
+.getElementById(page)  
+.classList.add("active");  
+}  
+  
+/* SAVE DETAILS */  
+function saveDetails(){  
+  
+const name=  
+document  
+.getElementById("name")  
+.value.trim();  
+  
+const school=  
+document  
+.getElementById("school")  
+.value.trim();  
+  
+const phone=  
+document  
+.getElementById("phone")  
+.value.trim();  
+  
+const index=  
+document  
+.getElementById("index")  
+.value.trim();  
+  
+if(  
+!name||  
+!school||  
+!phone||  
+!index  
+){  
+alert(  
+"Please fill all fields"  
+);  
+return;  
+}  
+  
+const students=  
+JSON.parse(  
+localStorage.getItem(  
+"students"  
+)||"{}"  
+);  
+  
+students[index]={  
+name,  
+school,  
+phone,  
+index,  
+answers:[]  
+};  
+  
+localStorage.setItem(  
+"students",  
+JSON.stringify(students)  
+);  
+  
+localStorage.setItem(  
+"currentIndex",  
+index  
+);  
+  
+go("quiz");  
+  
+loadQuestion();  
+}  
+  
+/* LOAD QUESTION */  
+function loadQuestion(){  
+  
+selectedAnswer=null;  
+  
+const q=  
+questions[currentQuestion];  
+  
+document  
+.getElementById(  
+"questionNumber"  
+).innerText=  
+`Question ${  
+currentQuestion+1  
+}/10`;  
+  
+document  
+.getElementById(  
+"questionText"  
+).innerText=  
+q.q;  
+  
+const box=  
+document  
+.getElementById(  
+"optionsBox"  
+);  
+  
+box.innerHTML="";  
+  
+q.options.forEach(  
+(option,index)=>{  
+  
+box.innerHTML+=`  
+  
+<div  
+class="option"  
+onclick="selectAnswer(  
+${index},this  
+)"  
+>  
+${option}  
+</div>  
+`;  
+});  
+}  
+  
+/* SELECT */  
+function selectAnswer(  
+index,el  
+){  
+  
+selectedAnswer=index;  
+  
+document  
+.querySelectorAll(  
+".option"  
+)  
+.forEach(o=>  
+o.classList.remove(  
+"selected"  
+)  
+);  
+  
+el.classList.add(  
+"selected"  
+);  
+}  
+/* NEXT QUESTION */  
+function nextQuestion(){  
+  
+if(selectedAnswer===null){  
+alert(  
+"Please select an answer first"  
+);  
+return;  
+}  
+  
+const index =  
+localStorage.getItem(  
+"currentIndex"  
+);  
+  
+const students =  
+JSON.parse(  
+localStorage.getItem(  
+"students"  
+)||"{}"  
+);  
+  
+/* SAVE ANSWER */  
+students[index]  
+.answers[currentQuestion]  
+=  
+selectedAnswer;  
+  
+localStorage.setItem(  
+"students",  
+JSON.stringify(  
+students  
+)  
+);  
+  
+/* MOVE TO NEXT */  
+currentQuestion++;  
+  
+if(  
+currentQuestion <  
+questions.length  
+){  
+loadQuestion();  
+return;  
+}  
+  
+/* SUBMIT */  
+submitAssignment();  
+}  
+  
+/* SUBMIT */  
+function submitAssignment(){  
+  
+const index =  
+localStorage.getItem(  
+"currentIndex"  
+);  
+  
+const students =  
+JSON.parse(  
+localStorage.getItem(  
+"students"  
+)||"{}"  
+);  
+  
+const s =  
+students[index];  
+  
+let answersText="";  
+  
+s.answers.forEach(  
+(ans,i)=>{  
+  
+answersText +=  
+  
+`Q${i+1}: ${  
+questions[i]  
+.options[ans]  
+}  
+  
+`;  
+});  
+  
+/* SEND TO YOUR WHATSAPP */  
+  
+  alert(  
+"Assignment Submitted ✅"  
+);  
+  
+/* RESET */  
+go("home");  
+}  
+/* ==========================  
+RESULTS PAGE  
+========================== */  
+  
+if(  
+window.location.hash  
+===  
+"#results"  
+){  
+  
+document.body.innerHTML = `  
+  
+<style>  
+body{  
+font-family:Segoe UI,sans-serif;  
+background:#0f172a;  
+color:white;  
+padding:20px;  
+}  
+  
+.card{  
+background:rgba(255,255,255,.08);  
+padding:20px;  
+border-radius:15px;  
+max-width:500px;  
+margin:auto;  
+}  
+  
+input{  
+width:100%;  
+padding:12px;  
+border:none;  
+border-radius:8px;  
+margin-bottom:10px;  
+font-size:15px;  
+}  
+  
+button{  
+background:#198754;  
+border:none;  
+padding:12px 15px;  
+border-radius:8px;  
+color:white;  
+cursor:pointer;  
+font-weight:bold;  
+}  
+  
+.result{  
+margin-top:20px;  
+padding:15px;  
+background:rgba(255,255,255,.08);  
+border-radius:10px;  
+}  
+</style>  <div class="card">  <h1>  
+📘 Student Results  
+</h1>  <p>  
+Enter your index number  
+to check result.  
+</p>  <input
 id="studentIndex"
 placeholder="Enter index number"
->
+
+> 
 
 <button
 onclick="checkStudentResult()"
->
+
+> 
+
 Check Result
 </button>
 
-<div
-id="resultBox"
-></div>
-
-</div>
-`;
-
-window.checkStudentResult =
+<div  
+id="resultBox"  
+></div>  </div>  
+`;  window.checkStudentResult =
 function(){
 
 const index =
@@ -703,14 +642,13 @@ if(
 ){
 box.innerHTML =
 `
-<p>
-❌ No result found
-</p>
-`;
-return;
-}
 
-const s =
+<p>  
+❌ No result found  
+</p>  
+`;  
+return;  
+}  const s =
 students[index];
 
 if(
@@ -718,14 +656,13 @@ if(
 ){
 box.innerHTML =
 `
-<p>
-⏳ Result not released yet.
-</p>
-`;
-return;
-}
 
-let marks = "";
+<p>  
+⏳ Result not released yet.  
+</p>  
+`;  
+return;  
+}  let marks = "";
 
 for(
 let i=0;
@@ -735,145 +672,113 @@ i++
 
 marks +=
 `
-<p>
-Q${i+1}:
-${s[`q${i}`]||0}/1
-</p>
-`;
-}
 
-box.innerHTML =
+<p>  
+Q${i+1}:  
+${s[`q${i}`]||0}/1  
+</p>  
+`;  
+}  box.innerHTML =
 `
-<div class="result">
 
-<h2>
-${s.name}
-</h2>
+<div class="result">  <h2>  
+${s.name}  
+</h2>  <p>  
+🏫 ${s.school}  
+</p>  <p>  
+🆔 ${s.index}  
+</p>  <hr>  ${marks}
 
-<p>
-🏫 ${s.school}
-</p>
-
-<p>
-🆔 ${s.index}
-</p>
-
-<hr>
-
-${marks}
-
-<h3>
-✅ Total:
-${s.score}/10
-</h3>
-
-<p>
-💬 Teacher Comment:
-<br>
-${s.comment || "No comment"}
-</p>
-
-</div>
-`;
-};
-
-  }
-  /* ==========================
+<h3>  
+✅ Total:  
+${s.score}/10  
+</h3>  <p>  
+💬 Teacher Comment:  
+<br>  
+${s.comment || "No comment"}  
+</p>  </div>  
+`;  
+};  }
+/* ==========================
 ADMIN PANEL
 ========================== */
 
 if(
 window.location.hash
-===
+
 "#wisekayadmin"
 ){
 
 document.body.innerHTML = `
 
-<style>
-body{
-font-family:Segoe UI,sans-serif;
-background:#0f172a;
-color:white;
-padding:20px;
-}
-
-.card{
-background:rgba(255,255,255,.08);
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-}
-
-input,select,textarea{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-margin-bottom:10px;
-font-size:15px;
-}
-
-button{
-background:#198754;
-border:none;
-padding:12px;
-border-radius:10px;
-color:white;
-cursor:pointer;
-font-weight:bold;
-margin-top:10px;
-width:100%;
-}
-</style>
-
-<div class="card" id="loginBox">
-
-<h1>
-🔒 WISEKAY ADMIN
-</h1>
-
-<input
+<style>  
+body{  
+font-family:Segoe UI,sans-serif;  
+background:#0f172a;  
+color:white;  
+padding:20px;  
+}  
+  
+.card{  
+background:rgba(255,255,255,.08);  
+padding:20px;  
+border-radius:15px;  
+margin-bottom:20px;  
+}  
+  
+input,select,textarea{  
+width:100%;  
+padding:12px;  
+border:none;  
+border-radius:8px;  
+margin-bottom:10px;  
+font-size:15px;  
+}  
+  
+button{  
+background:#198754;  
+border:none;  
+padding:12px;  
+border-radius:10px;  
+color:white;  
+cursor:pointer;  
+font-weight:bold;  
+margin-top:10px;  
+width:100%;  
+}  
+</style>  <div class="card" id="loginBox">  <h1>  
+🔒 WISEKAY ADMIN  
+</h1>  <input
 type="password"
 id="adminPass"
 placeholder="Enter Password"
->
+
+> 
 
 <button
 onclick="loginAdmin()"
->
+
+> 
+
 Login
 </button>
 
-</div>
-
-<div
-id="adminPanel"
-style="display:none;"
->
-
-<div class="card">
-
-<h2>
-Student Submissions
-</h2>
-
-<input
+</div>  <div  
+id="adminPanel"  
+style="display:none;"  
+>  <div class="card">  <h2>  
+Student Submissions  
+</h2>  <input
 id="searchIndex"
 placeholder="Search Index Number"
 onkeyup="loadStudents()"
->
 
-<div
-id="studentsBox"
-></div>
+> 
 
-</div>
-
-</div>
-`;
-
-/* LOGIN */
+<div  
+id="studentsBox"  
+></div>  </div>  </div>  
+`;  /* LOGIN */
 window.loginAdmin =
 function(){
 
@@ -912,7 +817,6 @@ loadStudents();
 };
 
 /* LOAD STUDENTS */
-/* LOAD STUDENTS */
 window.loadStudents =
 function(){
 
@@ -922,148 +826,6 @@ localStorage.getItem(
 "students"
 )||"{}"
 );
-
-const search =
-document
-.getElementById(
-"searchIndex"
-)
-.value
-.toLowerCase();
-
-const box =
-document
-.getElementById(
-"studentsBox"
-);
-
-box.innerHTML="";
-
-const indexes =
-Object.keys(students);
-
-if(indexes.length===0){
-box.innerHTML=
-`
-<div class="card">
-<h3>No submissions yet 😢</h3>
-</div>
-`;
-return;
-}
-
-/* TOTAL SUBMISSIONS */
-box.innerHTML += `
-<div class="card">
-<h2>
-📥 Total Submissions:
-${indexes.length}
-</h2>
-</div>
-`;
-
-indexes.forEach(index=>{
-
-if(
-search &&
-!index
-.toLowerCase()
-.includes(search)
-){
-return;
-}
-
-const s =
-students[index];
-
-let answers = "";
-
-for(
-let i=0;
-i<10;
-i++
-){
-
-answers += `
-
-<p>
-<b>Q${i+1}</b>:
-${
-questions[i]
-.options[
-s.answers[i]
-]
-||"No Answer"
-}
-</p>
-
-<select
-id="mark_${index}_${i}"
->
-
-<option value="0">
-0
-</option>
-
-<option value="1">
-1
-</option>
-
-</select>
-`;
-}
-
-box.innerHTML += `
-
-<div class="card">
-
-<h2>
-👨‍🎓 ${s.name}
-</h2>
-
-<p>
-🆔 <b>Index:</b>
-${s.index}
-</p>
-
-<p>
-🏫 <b>School:</b>
-${s.school}
-</p>
-
-<p>
-📞 <b>Phone:</b>
-${s.phone}
-</p>
-
-<hr>
-
-<h3>
-📘 Submitted Answers
-</h3>
-
-${answers}
-
-<textarea
-id="comment_${index}"
-placeholder="Teacher comment"
-></textarea>
-
-<button
-onclick="
-saveMarks(
-'${index}'
-)
-"
->
-Release Result
-</button>
-
-</div>
-`;
-});
-
-};
 
 const search =
 document
@@ -1106,79 +868,58 @@ i++
 
 answers += `
 
-<p>
-<b>
-Q${i+1}
-</b>:
-${
-questions[i]
-.options[
-s.answers[i]
-]
-||"No Answer"
-}
-</p>
-
-<select
+<p>  
+<b>  
+Q${i+1}  
+</b>:  
+${  
+questions[i]  
+.options[  
+s.answers[i]  
+]  
+||"No Answer"  
+}  
+</p>  <select
 id="mark_${index}_${i}"
->
 
-<option value="0">
-0
-</option>
+> 
 
-<option value="1">
-1
-</option>
+<option value="0">  
+0  
+</option>  <option value="1">  
+1  
+</option>  </select>  
+`;  
+}  box.innerHTML += `
 
-</select>
-`;
-}
+<div class="card">  <h3>  
+${s.name}  
+</h3>  <p>  
+🏫 ${s.school}  
+</p>  <p>  
+📞 ${s.phone}  
+</p>  <p>  
+🆔 ${s.index}  
+</p>  <hr>  ${answers}
 
-box.innerHTML += `
-
-<div class="card">
-
-<h3>
-${s.name}
-</h3>
-
-<p>
-🏫 ${s.school}
-</p>
-
-<p>
-📞 ${s.phone}
-</p>
-
-<p>
-🆔 ${s.index}
-</p>
-
-<hr>
-
-${answers}
-
-<textarea
-id="comment_${index}"
-placeholder="Teacher comment"
-></textarea>
-
-<button
+<textarea  
+id="comment_${index}"  
+placeholder="Teacher comment"  
+></textarea>  <button
 onclick="
 saveMarks(
 '${index}'
 )
 "
->
+
+> 
+
 Release Result
 </button>
 
-</div>
-`;
-});
-
-};
+</div>  
+`;  
+});  };
 
 /* SAVE MARKS */
 window.saveMarks =
@@ -1203,14 +944,14 @@ const mark =
 Number(
 document
 .getElementById(
-`mark_${index}_${i}`
+mark_${index}_${i}
 )
 .value
 );
 
 students[index]
-[`q${i}`]
-=
+[q${i}]
+
 mark;
 
 total +=
@@ -1225,7 +966,7 @@ students[index]
 .comment =
 document
 .getElementById(
-`comment_${index}`
+comment_${index}
 )
 .value;
 
@@ -1245,9 +986,9 @@ alert(
 );
 };
 
-  }
+}
 /* CLOSE SCRIPT */
 </script>
 
-</body>
-</html>
+</body>  
+</html>  
