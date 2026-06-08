@@ -214,7 +214,30 @@ Next
 </div>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+setDoc,
+getDoc,
+getDocs,
+collection
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCAx-Ze0v1xujh2B0D2MR2A2UptbMeab58",
+authDomain: "shs-ghana-portal.firebaseapp.com",
+projectId: "shs-ghana-portal",
+storageBucket: "shs-ghana-portal.firebasestorage.app",
+messagingSenderId: "333084111994",
+appId: "1:333084111994:web:213d3796fe23e9ce7077c3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 /* FAST LOADER */
 setTimeout(()=>{
